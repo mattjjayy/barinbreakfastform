@@ -16,243 +16,59 @@
       --border: #2c2c30;
       --success: #34c759;
     }
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Montserrat', sans-serif; 
-      -webkit-tap-highlight-color: transparent; 
-    }
-    body { 
-      background: var(--bg); 
-      color: var(--text); 
-      min-height: 100vh; 
-      padding: 20px 14px 120px; 
-    }
-    .container { 
-      max-width: 800px; 
-      margin: 0 auto; 
-    }
-    header { 
-      text-align: center; 
-      margin-bottom: 24px; 
-    }
-    header h1 { 
-      font-size: 22px; 
-      font-weight: 700; 
-      color: var(--accent); 
-      letter-spacing: 1px; 
-      text-transform: uppercase; 
-    }
-    header p { 
-      color: var(--text-muted); 
-      font-size: 13px; 
-      margin-top: 6px; 
-      line-height: 1.4;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; padding: 20px 14px 120px; }
+    .container { max-width: 850px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 24px; }
+    header h1 { font-size: 22px; font-weight: 700; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
+    header p { color: var(--text-muted); font-size: 13px; margin-top: 6px; line-height: 1.4; }
 
-    .card-section { 
-      background: var(--card-bg); 
-      border: 1px solid var(--border); 
-      border-radius: 16px; 
-      padding: 18px 16px; 
-      margin-bottom: 20px; 
-    }
-    .section-title { 
-      font-size: 16px; 
-      font-weight: 600; 
-      margin-bottom: 14px; 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-      color: var(--accent); 
-    }
+    .card-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 18px 16px; margin-bottom: 20px; }
+    .section-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--accent); }
     
-    .form-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
-      gap: 14px; 
-    }
-    .form-group label { 
-      display: block; 
-      font-size: 12px; 
-      color: var(--text-muted); 
-      margin-bottom: 6px; 
-    }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+    .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
     .form-group input, .form-group select, .form-group textarea {
-      width: 100%; 
-      background: #242428; 
-      border: 1px solid var(--border); 
-      border-radius: 10px; 
-      color: #fff; 
-      padding: 12px 14px; 
-      font-size: 14px; 
-      outline: none; 
-      transition: 0.2s; 
-      -webkit-appearance: none;
+      width: 100%; background: #242428; border: 1px solid var(--border); border-radius: 10px; color: #fff; padding: 12px 14px; font-size: 14px; outline: none; transition: 0.2s;
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { 
-      border-color: var(--accent); 
-    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
 
-    .guest-tab { 
-      border-left: 3px solid var(--accent); 
-      padding-left: 14px; 
-      margin-bottom: 20px; 
+    #deliveryOptionsBlock { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); }
+    .delivery-group { margin-bottom: 14px; }
+    .delivery-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #fff; }
+    .chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip-btn {
+      font-size: 12px; padding: 7px 12px; background: #242428; border: 1px solid var(--border); border-radius: 20px; color: #fff; cursor: pointer; user-select: none; transition: 0.15s;
     }
-    .guest-title { 
-      font-size: 16px; 
-      font-weight: 600; 
-      margin-bottom: 12px; 
-    }
+    .chip-btn.active { background: var(--accent); color: #000; font-weight: 600; border-color: var(--accent); }
 
-    .dish-category-label {
-      font-size: 13px; 
-      color: var(--accent); 
-      font-weight: 600; 
-      display: block; 
-      margin-bottom: 10px; 
-    }
+    .guest-tab { border-left: 3px solid var(--accent); padding-left: 14px; margin-bottom: 20px; }
+    .guest-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+    .dish-category-label { font-size: 13px; color: var(--accent); font-weight: 600; display: block; margin-bottom: 10px; }
 
-    .menu-grid { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-      gap: 12px; 
-      margin-bottom: 16px; 
-    }
-    .dish-card { 
-      background: #242428; 
-      border: 2px solid transparent; 
-      border-radius: 12px; 
-      overflow: hidden; 
-      cursor: pointer; 
-      transition: 0.2s; 
-      display: flex; 
-      flex-direction: column; 
-      min-height: 180px;
-    }
-    .dish-card.selected { 
-      border-color: var(--accent); 
-      background: #2c2920; 
-    }
-    .dish-img { 
-      width: 100%; 
-      height: 100px; 
-      object-fit: cover; 
-      background: #2c2c30; 
-      display: block;
-    }
-    .dish-info { 
-      padding: 10px; 
-      flex: 1; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: space-between; 
-    }
-    .dish-name { 
-      font-size: 13px; 
-      font-weight: 600; 
-      margin-bottom: 4px; 
-      line-height: 1.3; 
-    }
-    .dish-desc { 
-      font-size: 11px; 
-      color: var(--text-muted); 
-      line-height: 1.2;
-    }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .dish-card { background: #242428; border: 2px solid transparent; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; min-height: 180px; }
+    .dish-card.selected { border-color: var(--accent); background: #2c2920; }
+    .dish-img { width: 100%; height: 100px; object-fit: cover; background: #2c2c30; display: block; }
+    .dish-info { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .dish-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+    .dish-desc { font-size: 11px; color: var(--text-muted); line-height: 1.2; }
 
-    .modifiers { 
-      margin-top: 8px; 
-      padding-top: 8px; 
-      border-top: 1px solid var(--border); 
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: 6px; 
-    }
-    .mod-chip { 
-      font-size: 11px; 
-      padding: 6px 10px; 
-      background: #1a1a1e; 
-      border: 1px solid var(--border); 
-      border-radius: 20px; 
-      cursor: pointer; 
-      user-select: none; 
-      transition: 0.15s; 
-    }
-    .mod-chip.active { 
-      background: var(--accent); 
-      color: #000; 
-      border-color: var(--accent); 
-      font-weight: 600; 
-    }
+    .modifiers { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; }
+    .mod-chip { font-size: 11px; padding: 6px 10px; background: #1a1a1e; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; user-select: none; transition: 0.15s; }
+    .mod-chip.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
 
     .footer-bar {
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      right: 0; 
-      background: rgba(26, 26, 30, 0.95); 
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-top: 1px solid var(--border); 
-      padding: 14px 18px; 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      z-index: 100; 
+      position: fixed; bottom: 0; left: 0; right: 0; background: rgba(26, 26, 30, 0.95); backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; z-index: 100;
     }
-    .submit-btn {
-      background: var(--accent); 
-      color: #000; 
-      border: none; 
-      border-radius: 10px; 
-      padding: 14px 24px; 
-      font-size: 15px; 
-      font-weight: 700; 
-      cursor: pointer; 
-      transition: 0.2s; 
-    }
-    .submit-btn:disabled { 
-      background: #444; 
-      color: #777; 
-      cursor: not-allowed; 
-    }
+    .submit-btn { background: var(--accent); color: #000; border: none; border-radius: 10px; padding: 14px 24px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .submit-btn:disabled { background: #444; color: #777; cursor: not-allowed; }
 
-    .modal { 
-      position: fixed; 
-      inset: 0; 
-      background: rgba(0,0,0,0.85); 
-      display: none; 
-      align-items: center; 
-      justify-content: center; 
-      z-index: 200; 
-      padding: 20px; 
-    }
-    .modal-content { 
-      background: var(--card-bg); 
-      border: 1px solid var(--border); 
-      border-radius: 20px; 
-      padding: 28px 20px; 
-      text-align: center; 
-      max-width: 360px; 
-      width: 100%; 
-    }
-    .modal-content h2 { 
-      color: var(--success); 
-      margin-bottom: 10px; 
-      font-size: 20px;
-    }
-    .modal-btn { 
-      margin-top: 18px; 
-      background: #333; 
-      color: #fff; 
-      border: none; 
-      padding: 12px 20px; 
-      border-radius: 10px; 
-      font-weight: 600; 
-      cursor: pointer; 
-      width: 100%; 
-    }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
+    .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 28px 20px; text-align: center; max-width: 360px; width: 100%; }
+    .modal-content h2 { color: var(--success); margin-bottom: 10px; font-size: 20px; }
+    .modal-btn { margin-top: 18px; background: #333; color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; }
   </style>
 </head>
 <body>
@@ -260,7 +76,7 @@
 <div class="container">
   <header>
     <h1>Barin Residence</h1>
-    <p>Заказ завтрака • Подача 8:00 – 10:45 (до 22:00 накануне)</p>
+    <p>Заказ завтрака • Подача 8:00 – 10:45<br><strong>Завтраки выбираются ЕЖЕДНЕВНО до 22:00</strong></p>
   </header>
 
   <div class="card-section">
@@ -269,6 +85,10 @@
       <div class="form-group">
         <label>Номер комнаты *</label>
         <input type="text" id="roomNumber" placeholder="Например: 33" required>
+      </div>
+      <div class="form-group">
+        <label>ФИО гостя *</label>
+        <input type="text" id="guestName" placeholder="Иванов Иван Иванович" required>
       </div>
       <div class="form-group">
         <label>Количество персон</label>
@@ -282,7 +102,7 @@
       </div>
       <div class="form-group">
         <label>Место подачи *</label>
-        <select id="deliveryPlace">
+        <select id="deliveryPlace" onchange="handlePlaceChange()">
           <option value="Кафе">Кафе (9 этаж)</option>
           <option value="В номер">В номер</option>
         </select>
@@ -303,6 +123,57 @@
           <option value="10:30:00">10:30</option>
           <option value="10:45:00">10:45</option>
         </select>
+      </div>
+    </div>
+
+    <div id="deliveryOptionsBlock">
+      <div class="section-title" style="font-size: 14px; margin-bottom: 10px;">🛎 Дополнительно для подачи в номер:</div>
+      
+      <div class="delivery-group">
+        <div class="delivery-title">1. Хлеб:</div>
+        <div class="chips-row">
+          <div class="chip-btn" onclick="toggleOption('bread', 'Белый хлеб', this, false)">🍞 Белый</div>
+          <div class="chip-btn" onclick="toggleOption('bread', 'Черный хлеб', this, false)">🥖 Черный</div>
+          <div class="chip-btn" onclick="toggleOption('toast', 'В тостере', this, true)">🔥 В тостере</div>
+        </div>
+      </div>
+
+      <div class="delivery-group">
+        <div class="delivery-title">2. Напитки в номер:</div>
+        <div class="chips-row">
+          <div class="chip-btn" onclick="toggleOption('drink', 'Капучино', this, false)">☕️ Капучино</div>
+          <div class="chip-btn" onclick="toggleOption('drink', 'Латте', this, false)">☕️ Латте</div>
+          <div class="chip-btn" onclick="toggleOption('drink', 'Американо', this, false)">☕️ Американо</div>
+          <div class="chip-btn" onclick="toggleOption('drink', 'Черный чай', this, false)">🫖 Чай черный</div>
+          <div class="chip-btn" onclick="toggleOption('drink', 'Зеленый чай', this, false)">🫖 Чай зеленый</div>
+          <div class="chip-btn" onclick="toggleOption('drink', 'Яблочный сок', this, false)">🧃 Сок яблоко</div>
+          <div class="chip-btn" onclick="toggleOption('drink', 'Апельсиновый сок', this, false)">🧃 Сок апельсин</div>
+        </div>
+      </div>
+
+      <div class="delivery-group">
+        <div class="delivery-title">3. Соленые закуски:</div>
+        <div class="chips-row">
+          <div class="chip-btn" onclick="toggleOption('meat', 'Колбасная нарезка', this, true)">🥩 Колбасная нарезка</div>
+          <div class="chip-btn" onclick="toggleOption('cheese', 'Сырная нарезка', this, true)">🧀 Сырная нарезка</div>
+        </div>
+      </div>
+
+      <div class="delivery-group">
+        <div class="delivery-title">4. Свежесть:</div>
+        <div class="chips-row">
+          <div class="chip-btn" onclick="toggleOption('fruit', 'Фруктовая тарелка', this, true)">🍉 Фруктовая тарелка</div>
+          <div class="chip-btn" onclick="toggleOption('veg', 'Овощная тарелка', this, true)">🥒 Овощная тарелка</div>
+        </div>
+      </div>
+
+      <div class="delivery-group">
+        <div class="delivery-title">5. Сладкие топпинги:</div>
+        <div class="chips-row">
+          <div class="chip-btn" onclick="toggleOption('topping_jam', 'Джем', this, true)">🍓 Джем</div>
+          <div class="chip-btn" onclick="toggleOption('topping_honey', 'Мед', this, true)">🍯 Мед</div>
+          <div class="chip-btn" onclick="toggleOption('topping_milk', 'Сгущенка', this, true)">🥛 Сгущенка</div>
+        </div>
       </div>
     </div>
   </div>
@@ -333,7 +204,7 @@
 </div>
 
 <script>
-  const SHEETDB_URL = "https://sheetdb.io/api/v1/901k3dvjxe9zn";
+  const STEIN_URL = "https://api.steinhq.com/v1/storages/6a9c59c692b1163e973d508c/answers";
 
   const MAIN_DISHES = [
     { id: "omlet", name: "Омлет из двух яиц с добавками", desc: "Нежный омлет с топпингами", img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&auto=format&fit=crop", mods: ["Ветчина", "Сыр", "Помидор"] },
@@ -355,6 +226,60 @@
   ];
 
   let orderData = [];
+  let deliverySelections = {};
+
+  function handlePlaceChange() {
+    const place = document.getElementById('deliveryPlace').value;
+    const block = document.getElementById('deliveryOptionsBlock');
+    block.style.display = (place === "В номер") ? "block" : "none";
+  }
+
+  function toggleOption(category, value, el, isMulti) {
+    if (isMulti) {
+      if (!deliverySelections[category]) {
+        deliverySelections[category] = value;
+        el.classList.add('active');
+      } else {
+        delete deliverySelections[category];
+        el.classList.remove('active');
+      }
+    } else {
+      const parent = el.parentElement;
+      if (deliverySelections[category] === value) {
+        delete deliverySelections[category];
+        el.classList.remove('active');
+      } else {
+        deliverySelections[category] = value;
+        parent.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+      }
+    }
+  }
+
+  async function checkCapacity() {
+    try {
+      const res = await fetch(STEIN_URL);
+      if (!res.ok) return;
+      const data = await res.json();
+      
+      const counts = {};
+      data.forEach(row => {
+        if (row.time) {
+          counts[row.time] = (counts[row.time] || 0) + 1;
+        }
+      });
+
+      const select = document.getElementById('deliveryTime');
+      Array.from(select.options).forEach(opt => {
+        if ((counts[opt.value] || 0) >= 5) {
+          opt.disabled = true;
+          opt.text = opt.text.replace(" (занято)", "") + " (занято)";
+        }
+      });
+    } catch(e) {
+      console.warn("Слоты не загружены:", e);
+    }
+  }
 
   function renderGuests() {
     const count = parseInt(document.getElementById('guestsCount').value);
@@ -364,7 +289,7 @@
     orderData = [];
 
     for (let i = 0; i < count; i++) {
-      orderData.push({ mainDish: null, mainModifiers: [], extraDish: null, extraBase: "", extraModifiers: [], drink: "" });
+      orderData.push({ mainDish: null, mainModifiers: [], extraDish: null, extraBase: "", extraModifiers: [] });
 
       const section = document.createElement('div');
       section.className = 'card-section guest-tab';
@@ -379,11 +304,6 @@
         <label class="dish-category-label" style="margin-top: 18px;">2. ДОПОЛНИТЕЛЬНОЕ БЛЮДО (КАША - опционально):</label>
         <div class="menu-grid" id="extra-grid-${i}">
           ${EXTRA_DISHES.map(d => renderExtraCard(d, i)).join('')}
-        </div>
-
-        <div class="form-group" style="margin-top: 14px;">
-          <label>Напиток для Гостя №${i + 1} (сок, кофе, чай):</label>
-          <input type="text" placeholder="Например: Яблочный сок / Латте" oninput="orderData[${i}].drink = this.value">
         </div>
       `;
       container.appendChild(section);
@@ -471,7 +391,6 @@
 
   function toggleExtraDish(guestIdx, dishId, dishName) {
     const cardEl = document.getElementById(`extra-${guestIdx}-${dishId}`);
-    
     if (orderData[guestIdx].extraDish === dishName) {
       orderData[guestIdx].extraDish = null;
       orderData[guestIdx].extraBase = "";
@@ -482,9 +401,7 @@
     }
 
     orderData[guestIdx].extraDish = dishName;
-    if (!orderData[guestIdx].extraBase) {
-      orderData[guestIdx].extraBase = "На молоке";
-    }
+    if (!orderData[guestIdx].extraBase) orderData[guestIdx].extraBase = "На молоке";
 
     EXTRA_DISHES.forEach(d => {
       const el = document.getElementById(`extra-${guestIdx}-${d.id}`);
@@ -495,7 +412,6 @@
     });
 
     cardEl.classList.add('selected');
-    
     const activeBase = cardEl.querySelector(`.base-chip-${guestIdx}.active`);
     if (!activeBase) {
       const firstBase = cardEl.querySelector(`.base-chip-${guestIdx}`);
@@ -506,11 +422,7 @@
   function selectBase(guestIdx, dishId, baseName, el) {
     const dish = EXTRA_DISHES.find(d => d.id === dishId);
     const cardEl = document.getElementById(`extra-${guestIdx}-${dishId}`);
-
-    if (orderData[guestIdx].extraDish !== dish.name) {
-      toggleExtraDish(guestIdx, dishId, dish.name);
-    }
-
+    if (orderData[guestIdx].extraDish !== dish.name) toggleExtraDish(guestIdx, dishId, dish.name);
     orderData[guestIdx].extraBase = baseName;
     cardEl.querySelectorAll(`.base-chip-${guestIdx}`).forEach(c => c.classList.remove('active'));
     el.classList.add('active');
@@ -518,18 +430,11 @@
 
   function toggleExtraMod(guestIdx, dishId, modName, el) {
     const dish = EXTRA_DISHES.find(d => d.id === dishId);
-    
-    if (orderData[guestIdx].extraDish !== dish.name) {
-      toggleExtraDish(guestIdx, dishId, dish.name);
-    }
-
-    if (!orderData[guestIdx].extraModifiers) {
-      orderData[guestIdx].extraModifiers = [];
-    }
+    if (orderData[guestIdx].extraDish !== dish.name) toggleExtraDish(guestIdx, dishId, dish.name);
+    if (!orderData[guestIdx].extraModifiers) orderData[guestIdx].extraModifiers = [];
 
     const mods = orderData[guestIdx].extraModifiers;
     const idx = mods.indexOf(modName);
-
     if (idx > -1) {
       mods.splice(idx, 1);
       el.classList.remove('active');
@@ -541,8 +446,14 @@
 
   async function submitOrder() {
     const room = document.getElementById('roomNumber').value.trim();
+    const guestName = document.getElementById('guestName').value.trim();
+
     if (!room) {
       alert('Пожалуйста, укажите номер комнаты!');
+      return;
+    }
+    if (!guestName) {
+      alert('Пожалуйста, укажите ФИО гостя!');
       return;
     }
 
@@ -560,14 +471,13 @@
     const place = document.getElementById('deliveryPlace').value;
     const time = document.getElementById('deliveryTime').value;
     const generalComment = document.getElementById('comment').value.trim();
+    const deliverySummary = (place === "В номер") ? Object.values(deliverySelections).join(', ') : "";
 
     const rows = orderData.map(g => {
-      const extraModsStr = (g.extraModifiers && g.extraModifiers.length > 0)
-        ? g.extraModifiers.join(', ')
-        : "";
-
+      const extraModsStr = (g.extraModifiers && g.extraModifiers.length > 0) ? g.extraModifiers.join(', ') : "";
       return {
         "room": room,
+        "guest_name": guestName,
         "time": time,
         "place": place,
         "main": g.mainDish || "",
@@ -575,25 +485,25 @@
         "extra": g.extraDish || "",
         "extra_base": g.extraDish ? (g.extraBase || "На молоке") : "",
         "extra_mods": extraModsStr,
-        "comment": g.drink ? (generalComment ? `${g.drink} (${generalComment})` : g.drink) : generalComment
+        "delivery_options": deliverySummary,
+        "comment": generalComment
       };
     });
 
     try {
-      const response = await fetch(SHEETDB_URL, {
+      const response = await fetch(STEIN_URL, {
         method: "POST",
         headers: {
-          "Accept": "application/json",
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ data: rows })
+        body: JSON.stringify(rows)
       });
 
       if (response.ok) {
         document.getElementById('successModal').style.display = 'flex';
       } else {
-        const errJson = await response.json();
-        alert("Ошибка SheetDB: " + JSON.stringify(errJson));
+        const err = await response.text();
+        alert("Ошибка отправки: " + err);
       }
     } catch(e) {
       alert("Сетевая ошибка: " + e);
@@ -605,16 +515,24 @@
 
   function resetForm() {
     document.getElementById('roomNumber').value = '';
+    document.getElementById('guestName').value = '';
     document.getElementById('comment').value = '';
+    deliverySelections = {};
+    document.querySelectorAll('#deliveryOptionsBlock .chip-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('successModal').style.display = 'none';
     renderGuests();
+    checkCapacity();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderGuests);
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGuests();
+      checkCapacity();
+    });
   } else {
     renderGuests();
+    checkCapacity();
   }
 </script>
 </body>
