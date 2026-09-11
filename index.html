@@ -19,13 +19,49 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--bg); color: var(--text); min-height: 100vh; padding: 20px 14px 120px; }
     .container { max-width: 850px; margin: 0 auto; }
-    header { text-align: center; margin-bottom: 24px; }
+    header { text-align: center; margin-bottom: 24px; position: relative; }
     header h1 { font-size: 22px; font-weight: 700; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
     header p { color: var(--text-muted); font-size: 13px; margin-top: 6px; line-height: 1.4; }
 
+    .lang-switcher {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #000;
+    }
+
     .card-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 18px 16px; margin-bottom: 20px; }
-    .section-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--accent); }
-    
+    .section-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--accent); }
+
+    .badge-info {
+      font-size: 11px;
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--accent);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
     .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
     .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
     .form-group input, .form-group select, .form-group textarea {
@@ -44,10 +80,10 @@
 
     .guest-tab { border-left: 3px solid var(--accent); padding-left: 14px; margin-bottom: 20px; }
     .guest-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
-    .dish-category-label { font-size: 13px; color: var(--accent); font-weight: 600; display: block; margin-bottom: 10px; }
+    .dish-category-label { font-size: 13px; color: var(--accent); font-weight: 600; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 
     .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
-    .dish-card { background: #242428; border: 2px solid transparent; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; min-height: 180px; }
+    .dish-card { background: #242428; border: 2px solid transparent; border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; min-height: 180px; position: relative; }
     .dish-card.selected { border-color: var(--accent); background: #2c2920; }
     .dish-img { width: 100%; height: 100px; object-fit: cover; background: #2c2c30; display: block; }
     .dish-info { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
@@ -62,36 +98,59 @@
       position: fixed; bottom: 0; left: 0; right: 0; background: rgba(26, 26, 30, 0.95); backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; z-index: 100;
     }
+    .footer-price-block {
+      display: flex;
+      flex-direction: column;
+    }
+    .footer-price-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .footer-price-val {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
     .submit-btn { background: var(--accent); color: #000; border: none; border-radius: 10px; padding: 14px 24px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
     .submit-btn:disabled { background: #444; color: #777; cursor: not-allowed; }
 
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
-    .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 28px 20px; text-align: center; max-width: 360px; width: 100%; }
-    .modal-content h2 { color: var(--success); margin-bottom: 10px; font-size: 20px; }
-    .modal-btn { margin-top: 18px; background: #333; color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; }
+    .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 24px 20px; max-width: 480px; width: 100%; max-height: 85vh; overflow-y: auto; text-align: left; }
+    .modal-content h2 { color: var(--accent); margin-bottom: 12px; font-size: 18px; text-align: center; }
+    .modal-review-row { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding: 6px 0; font-size: 13px; color: #ccc; }
+    .modal-review-row b { color: #fff; }
+    .modal-guest-box { background: #242428; border-radius: 10px; padding: 10px; margin-top: 8px; font-size: 12px; line-height: 1.4; }
+    .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+    .modal-btn { background: #333; color: #fff; border: none; padding: 12px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; flex: 1; text-align: center; }
+    .modal-btn-confirm { background: var(--accent); color: #000; font-weight: 700; }
   </style>
 </head>
 <body>
 
 <div class="container">
   <header>
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLanguage('ru')">RU</button>
+      <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+    </div>
     <h1>Barin Residence</h1>
-    <p>Заказ завтрака • Подача 8:00 – 10:45<br><strong>Завтраки выбираются ЕЖЕДНЕВНО до 22:00</strong></p>
+    <p id="headerSubtitle">Заказ завтрака • Подача 8:00 – 10:45<br><strong>Завтраки выбираются ЕЖЕДНЕВНО до 22:00</strong></p>
   </header>
 
   <div class="card-section">
-    <div class="section-title">📍 Детали подачи</div>
+    <div class="section-title" id="tDetails">📍 Детали подачи</div>
     <div class="form-grid">
       <div class="form-group">
-        <label>Номер комнаты *</label>
+        <label id="tRoom">Номер комнаты *</label>
         <input type="text" id="roomNumber" placeholder="Например: 33" required>
       </div>
       <div class="form-group">
-        <label>ФИО гостя *</label>
+        <label id="tName">ФИО гостя *</label>
         <input type="text" id="guestName" placeholder="Иванов Иван Иванович" required>
       </div>
       <div class="form-group">
-        <label>Количество персон</label>
+        <label id="tCount">Количество персон</label>
         <select id="guestsCount" onchange="renderGuests()">
           <option value="1">1 гость</option>
           <option value="2">2 гостя</option>
@@ -101,14 +160,14 @@
         </select>
       </div>
       <div class="form-group">
-        <label>Место подачи *</label>
+        <label id="tPlace">Место подачи *</label>
         <select id="deliveryPlace" onchange="handlePlaceChange()">
           <option value="Кафе">Кафе (9 этаж)</option>
           <option value="В номер">В номер</option>
         </select>
       </div>
       <div class="form-group">
-        <label>Желаемое время подачи *</label>
+        <label id="tTime">Желаемое время подачи *</label>
         <select id="deliveryTime">
           <option value="8:00:00">8:00</option>
           <option value="8:15:00">8:15</option>
@@ -127,53 +186,31 @@
     </div>
 
     <div id="deliveryOptionsBlock">
-      <div class="section-title" style="font-size: 14px; margin-bottom: 10px;">🛎 Дополнительно для подачи в номер:</div>
-      
+      <div class="section-title" style="font-size: 14px; margin-bottom: 10px;" id="tDeliveryHead">🛎 Дополнительно для подачи в номер:</div>
+
       <div class="delivery-group">
-        <div class="delivery-title">1. Хлеб:</div>
-        <div class="chips-row">
-          <div class="chip-btn" onclick="toggleOption('bread', 'Белый хлеб', this, false)">🍞 Белый</div>
-          <div class="chip-btn" onclick="toggleOption('bread', 'Черный хлеб', this, false)">🥖 Черный</div>
-          <div class="chip-btn" onclick="toggleOption('toast', 'В тостере', this, true)">🔥 В тостере</div>
-        </div>
+        <div class="delivery-title" id="tBread">1. Хлеб:</div>
+        <div class="chips-row" id="chips-bread"></div>
       </div>
 
       <div class="delivery-group">
-        <div class="delivery-title">2. Напитки в номер:</div>
-        <div class="chips-row">
-          <div class="chip-btn" onclick="toggleOption('drink', 'Капучино', this, false)">☕️ Капучино</div>
-          <div class="chip-btn" onclick="toggleOption('drink', 'Латте', this, false)">☕️ Латте</div>
-          <div class="chip-btn" onclick="toggleOption('drink', 'Американо', this, false)">☕️ Американо</div>
-          <div class="chip-btn" onclick="toggleOption('drink', 'Черный чай', this, false)">🫖 Чай черный</div>
-          <div class="chip-btn" onclick="toggleOption('drink', 'Зеленый чай', this, false)">🫖 Чай зеленый</div>
-          <div class="chip-btn" onclick="toggleOption('drink', 'Яблочный сок', this, false)">🧃 Сок яблоко</div>
-          <div class="chip-btn" onclick="toggleOption('drink', 'Апельсиновый сок', this, false)">🧃 Сок апельсин</div>
-        </div>
+        <div class="delivery-title" id="tDrinks">2. Напитки в номер:</div>
+        <div class="chips-row" id="chips-drinks"></div>
       </div>
 
       <div class="delivery-group">
-        <div class="delivery-title">3. Соленые закуски:</div>
-        <div class="chips-row">
-          <div class="chip-btn" onclick="toggleOption('meat', 'Колбасная нарезка', this, true)">🥩 Колбасная нарезка</div>
-          <div class="chip-btn" onclick="toggleOption('cheese', 'Сырная нарезка', this, true)">🧀 Сырная нарезка</div>
-        </div>
+        <div class="delivery-title" id="tMeat">3. Соленые закуски:</div>
+        <div class="chips-row" id="chips-meat"></div>
       </div>
 
       <div class="delivery-group">
-        <div class="delivery-title">4. Свежесть:</div>
-        <div class="chips-row">
-          <div class="chip-btn" onclick="toggleOption('fruit', 'Фруктовая тарелка', this, true)">🍉 Фруктовая тарелка</div>
-          <div class="chip-btn" onclick="toggleOption('veg', 'Овощная тарелка', this, true)">🥒 Овощная тарелка</div>
-        </div>
+        <div class="delivery-title" id="tFresh">4. Свежесть:</div>
+        <div class="chips-row" id="chips-fresh"></div>
       </div>
 
       <div class="delivery-group">
-        <div class="delivery-title">5. Сладкие топпинги:</div>
-        <div class="chips-row">
-          <div class="chip-btn" onclick="toggleOption('topping_jam', 'Джем', this, true)">🍓 Джем</div>
-          <div class="chip-btn" onclick="toggleOption('topping_honey', 'Мед', this, true)">🍯 Мед</div>
-          <div class="chip-btn" onclick="toggleOption('topping_milk', 'Сгущенка', this, true)">🥛 Сгущенка</div>
-        </div>
+        <div class="delivery-title" id="tToppings">5. Сладкие топпинги:</div>
+        <div class="chips-row" id="chips-toppings"></div>
       </div>
     </div>
   </div>
@@ -181,7 +218,7 @@
   <div id="guestsContainer"></div>
 
   <div class="card-section">
-    <div class="section-title">💬 Особые пожелания или аллергии</div>
+    <div class="section-title" id="tCommentsHead">💬 Особые пожелания или аллергии</div>
     <div class="form-group">
       <textarea id="comment" rows="2" placeholder="Укажите аллергии или комментарии к заказу..."></textarea>
     </div>
@@ -189,71 +226,409 @@
 </div>
 
 <div class="footer-bar">
-  <div style="font-size: 12px; color: var(--text-muted);">
-    Выберите блюда для гостей
+  <div class="footer-price-block">
+    <span class="footer-price-label" id="tExtraLabel">Доплата за доп. блюда:</span>
+    <span class="footer-price-val" id="totalExtraPrice">0 ₽</span>
   </div>
-  <button class="submit-btn" id="submitBtn" onclick="submitOrder()">Оформить заказ</button>
+  <button class="submit-btn" id="submitBtn" onclick="openReviewModal()">Оформить заказ</button>
 </div>
 
-<div class="modal" id="successModal">
+<!-- Модальное окно проверки заказа -->
+<div class="modal" id="reviewModal">
   <div class="modal-content">
-    <h2>✓ Заказ принят!</h2>
-    <p style="color: var(--text-muted); font-size: 13px; margin-top: 8px;">Данные переданы на кухню. Ждем вас на завтрак!</p>
-    <button class="modal-btn" onclick="resetForm()">Сделать еще заказ</button>
+    <h2 id="revTitle">Подтверждение заказа</h2>
+    <div class="modal-review-row"><span id="lblRevRoom">Комната:</span><b id="revRoom"></b></div>
+    <div class="modal-review-row"><span id="lblRevName">Гость:</span><b id="revName"></b></div>
+    <div class="modal-review-row"><span id="lblRevPlace">Место подачи:</span><b id="revPlace"></b></div>
+    <div class="modal-review-row"><span id="lblRevTime">Время подачи:</span><b id="revTime"></b></div>
+    <div class="modal-review-row" id="revDeliveryRow" style="display: none;"><span id="lblRevServing">Сервировка:</span><b id="revDelivery"></b></div>
+
+    <div style="font-weight: 600; font-size: 13px; color: var(--accent); margin-top: 14px;" id="lblRevMenu">Выбранное меню:</div>
+    <div id="revGuestsList"></div>
+
+    <div class="modal-review-row" style="margin-top: 10px; font-size: 14px;">
+      <span id="lblRevTotal">Итого доплата:</span>
+      <b style="color: var(--accent); font-size: 16px;" id="revExtraPrice">0 ₽</b>
+    </div>
+
+    <div class="modal-actions">
+      <button class="modal-btn" onclick="closeReviewModal()" id="btnRevEdit">Изменить</button>
+      <button class="modal-btn modal-btn-confirm" id="btnRevConfirm" onclick="submitOrder()">Все верно, заказать</button>
+    </div>
+  </div>
+</div>
+
+<!-- Окно успешной отправки -->
+<div class="modal" id="successModal">
+  <div class="modal-content" style="text-align: center;">
+    <h2 style="color: var(--success);" id="tSuccessTitle">✓ Заказ принят!</h2>
+    <p style="color: var(--text-muted); font-size: 13px; margin-top: 8px;" id="tSuccessDesc">Данные переданы на кухню. Ждем вас на завтрак!</p>
+    <button class="modal-btn" style="margin-top: 18px; width: 100%;" onclick="resetForm()" id="tSuccessBtn">Сделать еще заказ</button>
   </div>
 </div>
 
 <script>
   const STEIN_URL = "https://api.steinhq.com/v1/storages/6a9c59c692b1163e973d508c/answers";
+  let currentLang = 'ru';
+
+  const DICTIONARY = {
+    ru: {
+      subtitle: "Заказ завтрака • Подача 8:00 – 10:45<br><strong>Завтраки выбираются ЕЖЕДНЕВНО до 22:00</strong>",
+      details: "📍 Детали подачи",
+      room: "Номер комнаты *",
+      roomPh: "Например: 33",
+      name: "ФИО гостя *",
+      namePh: "Иванов Иван Иванович",
+      count: "Количество персон",
+      place: "Место подачи *",
+      placeCafe: "Кафе (9 этаж)",
+      placeRoom: "В номер",
+      time: "Желаемое время подачи *",
+      deliveryHead: "🛎 Дополнительно для подачи в номер:",
+      bread: "1. Хлеб:",
+      drinks: "2. Напитки в номер:",
+      meat: "3. Соленые закуски:",
+      fresh: "4. Свежесть:",
+      toppings: "5. Сладкие топпинги:",
+      commentsHead: "💬 Особые пожелания или аллергии",
+      commentPh: "Укажите аллергии или комментарии к заказу...",
+      extraLabel: "Доплата за доп. блюда:",
+      btnOrder: "Оформить заказ",
+      guestTitle: "👤 Гость №",
+      mainLabel: "1. ОСНОВНЫЕ БЛЮДА (выберите одно или несколько):",
+      badgeLimit: "Первое бесплатно, каждое след. +350 ₽",
+      extraLabelDish: "2. ДОПОЛНИТЕЛЬНОЕ БЛЮДО (КАША - опционально):",
+      reviewTitle: "Подтверждение заказа",
+      revRoom: "Комната:",
+      revName: "Гость:",
+      revPlace: "Место подачи:",
+      revTime: "Время подачи:",
+      revServing: "Сервировка:",
+      revMenu: "Выбранное меню:",
+      revTotal: "Итого доплата:",
+      btnBack: "Изменить",
+      btnConfirm: "Все верно, заказать",
+      successTitle: "✓ Заказ принят!",
+      successDesc: "Данные переданы на кухню. Ждем вас на завтрак!",
+      successBtn: "Сделать еще заказ",
+      alertRoom: "Пожалуйста, укажите номер комнаты!",
+      alertName: "Пожалуйста, укажите ФИО гостя!",
+      alertNoDish: "Пожалуйста, выберите хотя бы одно блюдо для Гостя №",
+      sending: "Отправка..."
+    },
+    en: {
+      subtitle: "Breakfast order • Serving 8:00 – 10:45<br><strong>Orders must be placed DAILY before 22:00</strong>",
+      details: "📍 Serving Details",
+      room: "Room number *",
+      roomPh: "E.g. 33",
+      name: "Guest full name *",
+      namePh: "John Doe",
+      count: "Number of guests",
+      place: "Serving place *",
+      placeCafe: "Cafe (9th floor)",
+      placeRoom: "Room delivery",
+      time: "Preferred time *",
+      deliveryHead: "🛎 Extra for room delivery:",
+      bread: "1. Bread:",
+      drinks: "2. Beverages:",
+      meat: "3. Cold cuts:",
+      fresh: "4. Fresh platters:",
+      toppings: "5. Sweet toppings:",
+      commentsHead: "💬 Special requests or allergies",
+      commentPh: "Specify allergies or order comments...",
+      extraLabel: "Extra dishes charge:",
+      btnOrder: "Review Order",
+      guestTitle: "👤 Guest #",
+      mainLabel: "1. MAIN DISHES (select one or multiple):",
+      badgeLimit: "1st is free, each extra +350 ₽",
+      extraLabelDish: "2. EXTRA DISH (PORRIDGE - optional):",
+      reviewTitle: "Order Confirmation",
+      revRoom: "Room:",
+      revName: "Guest:",
+      revPlace: "Place:",
+      revTime: "Time:",
+      revServing: "Serving:",
+      revMenu: "Selected items:",
+      revTotal: "Total extra charge:",
+      btnBack: "Edit",
+      btnConfirm: "Confirm & Order",
+      successTitle: "✓ Order Accepted!",
+      successDesc: "Your order has been sent to the kitchen. Enjoy your meal!",
+      successBtn: "Place another order",
+      alertRoom: "Please enter your room number!",
+      alertName: "Please enter your full name!",
+      alertNoDish: "Please select at least one dish for Guest #",
+      sending: "Sending..."
+    }
+  };
+
+  const DELIVERY_ITEMS = {
+    bread: [
+      { id: "bread_white", ru: "🍞 Белый", en: "🍞 White bread", val_ru: "Белый хлеб", val_en: "White bread" },
+      { id: "bread_black", ru: "🥖 Черный", en: "🥖 Rye bread", val_ru: "Черный хлеб", val_en: "Rye bread" },
+      { id: "bread_toast", ru: "🔥 В тостере", en: "🔥 Toasted", val_ru: "В тостере", val_en: "Toasted" }
+    ],
+    drinks: [
+      { id: "cappuccino", ru: "☕️ Капучино", en: "☕️ Cappuccino", val_ru: "Капучино", val_en: "Cappuccino" },
+      { id: "latte", ru: "☕️ Латте", en: "☕️ Latte", val_ru: "Латте", val_en: "Latte" },
+      { id: "americano", ru: "☕️ Американо", en: "☕️ Americano", val_ru: "Американо", val_en: "Americano" },
+      { id: "black_tea", ru: "🫖 Чай черный", en: "🫖 Black tea", val_ru: "Черный чай", val_en: "Black tea" },
+      { id: "green_tea", ru: "🫖 Чай зеленый", en: "🫖 Green tea", val_ru: "Зеленый чай", val_en: "Green tea" },
+      { id: "apple_juice", ru: "🧃 Сок яблоко", en: "🧃 Apple juice", val_ru: "Яблочный сок", val_en: "Apple juice" },
+      { id: "orange_juice", ru: "🧃 Сок апельсин", en: "🧃 Orange juice", val_ru: "Апельсиновый сок", val_en: "Orange juice" }
+    ],
+    meat: [
+      { id: "meat_cut", ru: "🥩 Колбасная нарезка", en: "🥩 Cold cuts plate", val_ru: "Колбасная нарезка", val_en: "Cold cuts" },
+      { id: "cheese_cut", ru: "🧀 Сырная нарезка", en: "🧀 Cheese plate", val_ru: "Сырная нарезка", val_en: "Cheese plate" }
+    ],
+    fresh: [
+      { id: "fruit_plate", ru: "🍉 Фруктовая тарелка", en: "🍉 Fruit platter", val_ru: "Фруктовая тарелка", val_en: "Fruit platter" },
+      { id: "veg_plate", ru: "🥒 Овощная тарелка", en: "🥒 Vegetable plate", val_ru: "Овощная тарелка", val_en: "Vegetable plate" }
+    ],
+    toppings: [
+      { id: "jam", ru: "🍓 Джем", en: "🍓 Jam", val_ru: "Джем", val_en: "Jam" },
+      { id: "honey", ru: "🍯 Мед", en: "🍯 Honey", val_ru: "Мед", val_en: "Honey" },
+      { id: "cond_milk", ru: "🥛 Сгущенка", en: "🥛 Condensed milk", val_ru: "Сгущенка", val_en: "Condensed milk" }
+    ]
+  };
 
   const MAIN_DISHES = [
-    { id: "omlet", name: "Омлет из двух яиц с добавками", desc: "Нежный омлет с топпингами", img: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400&auto=format&fit=crop", mods: ["Ветчина", "Сыр", "Помидор"] },
-    { id: "glazunya", name: "Глазунья из двух яиц с добавками", desc: "Яичница из двух яиц", img: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&auto=format&fit=crop", mods: ["Ветчина", "Сыр", "Помидор"] },
-    { id: "brioche", name: "Злаковая бриошь с беконом, жареным яйцом, с", desc: "С салатом и сыром Чеддер", img: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=400&auto=format&fit=crop", mods: [] },
-    { id: "croissant_salmon", name: "Круассан с яйцом пашот, слабосоленой семгой", desc: "Свежая выпечка и семга", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&auto=format&fit=crop", mods: [] },
-    { id: "croissant_nutella", name: "Круассан с нутеллой", desc: "Сладкий круассан", img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&auto=format&fit=crop", mods: [] },
-    { id: "croissant_tomato", name: "Круассан с томатом и помидором", desc: "Легкий круассан", img: "https://images.unsplash.com/photo-1530610476181-d83430b64dcd?w=400&auto=format&fit=crop", mods: [] },
-    { id: "syrniki", name: "Сырники с ягодами, вареньем и сметаной", desc: "Классические сырники", img: "https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=400&auto=format&fit=crop", mods: [] },
-    { id: "blini_tvorog", name: "Блины с творогом", desc: "Сладкие блинчики", img: "https://images.unsplash.com/photo-1519676867240-f03562e64548?w=400&auto=format&fit=crop", mods: [] },
-    { id: "blini_banana_choc", name: "Блины с бананом и шоколадом", desc: "Десертные блины", img: "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?w=400&auto=format&fit=crop", mods: [] },
-    { id: "blini_salmon", name: "Блины с лососем и сливочным сыром", desc: "Сытные блины с рыбой", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400&auto=format&fit=crop", mods: [] },
-    { id: "caesar_sandwich", name: 'Сендвич "Цезарь" с куриным филе гриль', desc: "С фирменным соусом", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400&auto=format&fit=crop", mods: [] }
+    { 
+      id: "omlet", 
+      name_ru: "Омлет из двух яиц с добавками", 
+      name_en: "Two-egg omelette with toppings",
+      desc_ru: "нежный омлет с добавками", 
+      desc_en: "tender omelette with add-ins",
+      img: "omlet.jpg", 
+      mods_ru: ["Ветчина", "Сыр", "Помидор"],
+      mods_en: ["Ham", "Cheese", "Tomato"]
+    },
+    { 
+      id: "glazunya", 
+      name_ru: "Глазунья из двух яиц с добавками", 
+      name_en: "Fried eggs (sunny side up)",
+      desc_ru: "Яичница из двух яиц", 
+      desc_en: "Two fried eggs with toppings",
+      img: "glazunya.jpg", 
+      mods_ru: ["Ветчина", "Сыр", "Помидор"],
+      mods_en: ["Ham", "Cheese", "Tomato"]
+    },
+    { 
+      id: "brioche", 
+      name_ru: "Злаковая бриошь с беконом, жареным яйцом, с", 
+      name_en: "Cereal brioche with bacon & fried egg",
+      desc_ru: "С салатом и сыром Чеддер", 
+      desc_en: "With lettuce and Cheddar cheese",
+      img: "brioche.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "croissant_salmon", 
+      name_ru: "Круассан с яйцом пашот, слабосоленой семгой", 
+      name_en: "Croissant with poached egg & salmon",
+      desc_ru: "Свежая выпечка и семга", 
+      desc_en: "Freshly baked pastry with salted salmon",
+      img: "croissant_salmon.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "croissant_nutella", 
+      name_ru: "Круассан с нутеллой", 
+      name_en: "Nutella croissant",
+      desc_ru: "Сладкий круассан", 
+      desc_en: "Sweet baked croissant with Nutella",
+      img: "croissant_nutella.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "croissant_tomato", 
+      name_ru: "Круассан с томатом и помидором", 
+      name_en: "Tomato & herb croissant",
+      desc_ru: "Легкий круассан", 
+      desc_en: "Light croissant with tomatoes",
+      img: "croissant_tomato.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "syrniki", 
+      name_ru: "Сырники с ягодами, вареньем и сметаной", 
+      name_en: "Cottage cheese pancakes (Syrniki)",
+      desc_ru: "Классические сырники", 
+      desc_en: "With berries, jam, and sour cream",
+      img: "syrniki.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "syrniki_salt", 
+      name_ru: "Соленые сырники с вялеными томатами", 
+      name_en: "Savory cottage cheese pancakes with sun-dried tomatoes",
+      desc_ru: "Пикантные сырники с вялеными томатами", 
+      desc_en: "Savory syrniki with sun-dried tomatoes",
+      img: "syrniki_salt.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "blini_tvorog", 
+      name_ru: "Блины с творогом", 
+      name_en: "Pancakes with cottage cheese",
+      desc_ru: "Сладкие блинчики", 
+      desc_en: "Sweet rolled pancakes",
+      img: "blini_tvorog.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "blini_banana_choc", 
+      name_ru: "Блины с бананом и шоколадом", 
+      name_en: "Pancakes with banana & chocolate",
+      desc_ru: "Десертные блины", 
+      desc_en: "Dessert rolled pancakes",
+      img: "blini_banana_choc.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "blini_salmon", 
+      name_ru: "Блины с лососем и сливочным сыром", 
+      name_en: "Pancakes with salmon & cream cheese",
+      desc_ru: "Сытные блины с рыбой", 
+      desc_en: "Savory rolled pancakes",
+      img: "blini_salmon.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
+      id: "caesar_sandwich", 
+      name_ru: 'Сендвич "Цезарь" с куриным филе гриль', 
+      name_en: 'Caesar sandwich with grilled chicken',
+      desc_ru: "С фирменным соусом", 
+      desc_en: "With signature Caesar sauce",
+      img: "caesar_sandwich.jpg", 
+      mods_ru: [], mods_en: [] 
+    }
   ];
 
   const EXTRA_DISHES = [
-    { id: "oatmeal", name: "Овсяная каша", desc: "Выберите основу и добавки", img: "https://images.unsplash.com/photo-1517673132405-a56a62b18caf?w=400&auto=format&fit=crop", bases: ["На молоке", "На воде", "На молоке (БЕЗ САХАРА)"], mods: ["Фрукты", "Орехи"] },
-    { id: "rice_porridge", name: "Рисовая каша", desc: "Выберите основу и добавки", img: "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400&auto=format&fit=crop", bases: ["На молоке", "На воде", "На молоке (БЕЗ САХАРА)"], mods: ["Фрукты", "Орехи"] }
+    { 
+      id: "oatmeal", 
+      name_ru: "Овсяная каша", 
+      name_en: "Oatmeal porridge",
+      desc_ru: "Выберите основу и добавки", 
+      desc_en: "Choose base & toppings",
+      img: "oatmeal.jpg", 
+      bases_ru: ["На молоке", "На воде", "На молоке (БЕЗ САХАРА)"],
+      bases_en: ["Milk", "Water", "Milk (NO SUGAR)"],
+      mods_ru: ["Фрукты", "Орехи"],
+      mods_en: ["Fruits", "Nuts"]
+    },
+    { 
+      id: "rice_porridge", 
+      name_ru: "Рисовая каша", 
+      name_en: "Rice porridge",
+      desc_ru: "Выберите основу и добавки", 
+      desc_en: "Choose base & toppings",
+      img: "rice_porridge.jpg", 
+      bases_ru: ["На молоке", "На воде", "На молоке (БЕЗ САХАРА)"],
+      bases_en: ["Milk", "Water", "Milk (NO SUGAR)"],
+      mods_ru: ["Фрукты", "Орехи"],
+      mods_en: ["Fruits", "Nuts"]
+    }
   ];
 
   let orderData = [];
-  let deliverySelections = {};
+  let selectedDeliveryIds = [];
+
+  function setLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase() === lang));
+
+    const dict = DICTIONARY[lang];
+    document.getElementById('headerSubtitle').innerHTML = dict.subtitle;
+    document.getElementById('tDetails').innerText = dict.details;
+    document.getElementById('tRoom').innerText = dict.room;
+    document.getElementById('roomNumber').placeholder = dict.roomPh;
+    document.getElementById('tName').innerText = dict.name;
+    document.getElementById('guestName').placeholder = dict.namePh;
+    document.getElementById('tCount').innerText = dict.count;
+    document.getElementById('tPlace').innerText = dict.place;
+    document.getElementById('tTime').innerText = dict.time;
+    document.getElementById('tDeliveryHead').innerText = dict.deliveryHead;
+    document.getElementById('tBread').innerText = dict.bread;
+    document.getElementById('tDrinks').innerText = dict.drinks;
+    document.getElementById('tMeat').innerText = dict.meat;
+    document.getElementById('tFresh').innerText = dict.fresh;
+    document.getElementById('tToppings').innerText = dict.toppings;
+    document.getElementById('tCommentsHead').innerText = dict.commentsHead;
+    document.getElementById('comment').placeholder = dict.commentPh;
+    document.getElementById('tExtraLabel').innerText = dict.extraLabel;
+    document.getElementById('submitBtn').innerText = dict.btnOrder;
+
+    const placeSel = document.getElementById('deliveryPlace');
+    placeSel.options[0].text = dict.placeCafe;
+    placeSel.options[1].text = dict.placeRoom;
+
+    const countSel = document.getElementById('guestsCount');
+    Array.from(countSel.options).forEach((opt, idx) => {
+      opt.text = lang === 'ru' ? `${idx + 1} персон(ы)` : `${idx + 1} guest(s)`;
+    });
+
+    document.getElementById('revTitle').innerText = dict.reviewTitle;
+    document.getElementById('lblRevRoom').innerText = dict.revRoom;
+    document.getElementById('lblRevName').innerText = dict.revName;
+    document.getElementById('lblRevPlace').innerText = dict.revPlace;
+    document.getElementById('lblRevTime').innerText = dict.revTime;
+    document.getElementById('lblRevServing').innerText = dict.revServing;
+    document.getElementById('lblRevMenu').innerText = dict.revMenu;
+    document.getElementById('lblRevTotal').innerText = dict.revTotal;
+    document.getElementById('btnRevEdit').innerText = dict.btnBack;
+    document.getElementById('btnRevConfirm').innerText = dict.btnConfirm;
+
+    document.getElementById('tSuccessTitle').innerText = dict.successTitle;
+    document.getElementById('tSuccessDesc').innerText = dict.successDesc;
+    document.getElementById('tSuccessBtn').innerText = dict.successBtn;
+
+    renderDeliveryChips();
+    renderGuests();
+    calculatePrice();
+  }
 
   function handlePlaceChange() {
     const place = document.getElementById('deliveryPlace').value;
     const block = document.getElementById('deliveryOptionsBlock');
-    block.style.display = (place === "В номер") ? "block" : "none";
+    block.style.display = (place === "В номер" || place === "Кафе" && false || place.includes("номер") || place.includes("Room")) ? "block" : "none";
   }
 
-  function toggleOption(category, value, el, isMulti) {
-    if (isMulti) {
-      if (!deliverySelections[category]) {
-        deliverySelections[category] = value;
-        el.classList.add('active');
-      } else {
-        delete deliverySelections[category];
-        el.classList.remove('active');
-      }
+  function renderDeliveryChips() {
+    Object.keys(DELIVERY_ITEMS).forEach(groupKey => {
+      const container = document.getElementById(`chips-${groupKey}`);
+      if (!container) return;
+      container.innerHTML = '';
+
+      DELIVERY_ITEMS[groupKey].forEach(item => {
+        const isSelected = selectedDeliveryIds.includes(item.id);
+        const chip = document.createElement('div');
+        chip.className = `chip-btn ${isSelected ? 'active' : ''}`;
+        chip.innerText = currentLang === 'ru' ? item.ru : item.en;
+        chip.onclick = () => toggleDeliveryOption(item.id, chip);
+        container.appendChild(chip);
+      });
+    });
+  }
+
+  function toggleDeliveryOption(id, el) {
+    const idx = selectedDeliveryIds.indexOf(id);
+    if (idx > -1) {
+      selectedDeliveryIds.splice(idx, 1);
+      el.classList.remove('active');
     } else {
-      const parent = el.parentElement;
-      if (deliverySelections[category] === value) {
-        delete deliverySelections[category];
-        el.classList.remove('active');
-      } else {
-        deliverySelections[category] = value;
-        parent.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-      }
+      selectedDeliveryIds.push(id);
+      el.classList.add('active');
     }
+  }
+
+  function getSelectedDeliveryText(lang) {
+    const allItems = Object.values(DELIVERY_ITEMS).flat();
+    return selectedDeliveryIds.map(id => {
+      const found = allItems.find(it => it.id === id);
+      return found ? (lang === 'ru' ? found.val_ru : found.val_en) : id;
+    }).join(', ');
   }
 
   async function checkCapacity() {
@@ -261,7 +636,7 @@
       const res = await fetch(STEIN_URL);
       if (!res.ok) return;
       const data = await res.json();
-      
+
       const counts = {};
       data.forEach(row => {
         if (row.time) {
@@ -285,23 +660,33 @@
     const count = parseInt(document.getElementById('guestsCount').value);
     const container = document.getElementById('guestsContainer');
     if (!container) return;
+
+    while (orderData.length < count) {
+      orderData.push({ mainDishes: [], extraDish: null, extraBase: "", extraModifiers: [] });
+    }
+    while (orderData.length > count) {
+      orderData.pop();
+    }
+
     container.innerHTML = '';
-    orderData = [];
 
     for (let i = 0; i < count; i++) {
-      orderData.push({ mainDish: null, mainModifiers: [], extraDish: null, extraBase: "", extraModifiers: [] });
-
       const section = document.createElement('div');
       section.className = 'card-section guest-tab';
       section.innerHTML = `
-        <div class="guest-title">👤 Гость №${i + 1}</div>
-        
-        <label class="dish-category-label">1. ОСНОВНОЕ БЛЮДО (опционально):</label>
+        <div class="guest-title">${DICTIONARY[currentLang].guestTitle}${i + 1}</div>
+
+        <div class="dish-category-label">
+          <span>${DICTIONARY[currentLang].mainLabel}</span>
+          <span class="badge-info">${DICTIONARY[currentLang].badgeLimit}</span>
+        </div>
         <div class="menu-grid" id="main-grid-${i}">
           ${MAIN_DISHES.map(d => renderMainCard(d, i)).join('')}
         </div>
 
-        <label class="dish-category-label" style="margin-top: 18px;">2. ДОПОЛНИТЕЛЬНОЕ БЛЮДО (КАША - опционально):</label>
+        <div class="dish-category-label" style="margin-top: 18px;">
+          <span>${DICTIONARY[currentLang].extraLabelDish}</span>
+        </div>
         <div class="menu-grid" id="extra-grid-${i}">
           ${EXTRA_DISHES.map(d => renderExtraCard(d, i)).join('')}
         </div>
@@ -311,17 +696,28 @@
   }
 
   function renderMainCard(dish, guestIdx) {
+    const g = orderData[guestIdx];
+    const isSelected = g.mainDishes.some(m => m.id === dish.id);
+    const selectedItem = g.mainDishes.find(m => m.id === dish.id);
+
+    const name = currentLang === 'ru' ? dish.name_ru : dish.name_en;
+    const desc = currentLang === 'ru' ? dish.desc_ru : dish.desc_en;
+    const mods = currentLang === 'ru' ? dish.mods_ru : dish.mods_en;
+
     return `
-      <div class="dish-card" id="main-${guestIdx}-${dish.id}" onclick="toggleMainDish(${guestIdx}, '${dish.id}', '${dish.name}')">
-        <img src="${dish.img}" class="dish-img" alt="${dish.name}" loading="lazy" onerror="this.style.display='none'">
+      <div class="dish-card ${isSelected ? 'selected' : ''}" id="main-${guestIdx}-${dish.id}" onclick="toggleMainDish(${guestIdx}, '${dish.id}')">
+        <img src="${dish.img}" class="dish-img" alt="${name}" loading="lazy" onerror="this.style.display='none'">
         <div class="dish-info">
           <div>
-            <div class="dish-name">${dish.name}</div>
-            <div class="dish-desc">${dish.desc}</div>
+            <div class="dish-name">${name}</div>
+            <div class="dish-desc">${desc}</div>
           </div>
-          ${dish.mods.length > 0 ? `
+          ${mods && mods.length > 0 ? `
             <div class="modifiers" onclick="event.stopPropagation()">
-              ${dish.mods.map(m => `<div class="mod-chip" onclick="toggleMainMod(${guestIdx}, '${m}', this)">+ ${m}</div>`).join('')}
+              ${mods.map(m => {
+                const isActive = selectedItem && selectedItem.mods.includes(m);
+                return `<div class="mod-chip ${isActive ? 'active' : ''}" onclick="toggleMainMod(${guestIdx}, '${dish.id}', '${m}', this)">+ ${m}</div>`;
+              }).join('')}
             </div>
           ` : ''}
         </div>
@@ -330,161 +726,235 @@
   }
 
   function renderExtraCard(dish, guestIdx) {
+    const g = orderData[guestIdx];
+    const isSelected = g.extraDish === dish.id;
+
+    const name = currentLang === 'ru' ? dish.name_ru : dish.name_en;
+    const desc = currentLang === 'ru' ? dish.desc_ru : dish.desc_en;
+    const bases = currentLang === 'ru' ? dish.bases_ru : dish.bases_en;
+    const mods = currentLang === 'ru' ? dish.mods_ru : dish.mods_en;
+
+    const currentBase = g.extraBase || bases[0];
+
     return `
-      <div class="dish-card" id="extra-${guestIdx}-${dish.id}" onclick="toggleExtraDish(${guestIdx}, '${dish.id}', '${dish.name}')">
-        <img src="${dish.img}" class="dish-img" alt="${dish.name}" loading="lazy" onerror="this.style.display='none'">
+      <div class="dish-card ${isSelected ? 'selected' : ''}" id="extra-${guestIdx}-${dish.id}" onclick="toggleExtraDish(${guestIdx}, '${dish.id}')">
+        <img src="${dish.img}" class="dish-img" alt="${name}" loading="lazy" onerror="this.style.display='none'">
         <div class="dish-info">
           <div>
-            <div class="dish-name">${dish.name}</div>
-            <div class="dish-desc">${dish.desc}</div>
+            <div class="dish-name">${name}</div>
+            <div class="dish-desc">${desc}</div>
           </div>
           <div class="modifiers" onclick="event.stopPropagation()">
-            ${dish.bases.map((b, bIdx) => `<div class="mod-chip base-chip-${guestIdx} ${bIdx === 0 ? 'active' : ''}" onclick="selectBase(${guestIdx}, '${dish.id}', '${b}', this)">${b}</div>`).join('')}
+            ${bases.map(b => `<div class="mod-chip base-chip-${guestIdx} ${isSelected && currentBase === b ? 'active' : ''}" onclick="selectBase(${guestIdx}, '${dish.id}', '${b}', this)">${b}</div>`).join('')}
           </div>
           <div class="modifiers" style="margin-top:4px; padding-top:4px; border:none;" onclick="event.stopPropagation()">
-            ${dish.mods.map(m => `<div class="mod-chip extra-mod-chip-${guestIdx}" onclick="toggleExtraMod(${guestIdx}, '${dish.id}', '${m}', this)">+ ${m}</div>`).join('')}
+            ${mods.map(m => {
+              const isActive = isSelected && g.extraModifiers.includes(m);
+              return `<div class="mod-chip extra-mod-chip-${guestIdx} ${isActive ? 'active' : ''}" onclick="toggleExtraMod(${guestIdx}, '${dish.id}', '${m}', this)">+ ${m}</div>`;
+            }).join('')}
           </div>
         </div>
       </div>
     `;
   }
 
-  function toggleMainDish(guestIdx, dishId, dishName) {
-    const cardEl = document.getElementById(`main-${guestIdx}-${dishId}`);
-    if (orderData[guestIdx].mainDish === dishName) {
-      orderData[guestIdx].mainDish = null;
-      orderData[guestIdx].mainModifiers = [];
-      cardEl.classList.remove('selected');
-      cardEl.querySelectorAll('.mod-chip').forEach(c => c.classList.remove('active'));
-      return;
-    }
+  function toggleMainDish(guestIdx, dishId) {
+    const g = orderData[guestIdx];
+    const foundIdx = g.mainDishes.findIndex(m => m.id === dishId);
 
-    orderData[guestIdx].mainDish = dishName;
-    orderData[guestIdx].mainModifiers = [];
-    MAIN_DISHES.forEach(d => {
-      const el = document.getElementById(`main-${guestIdx}-${d.id}`);
-      if (el) {
-        el.classList.remove('selected');
-        el.querySelectorAll('.mod-chip').forEach(c => c.classList.remove('active'));
-      }
-    });
-    cardEl.classList.add('selected');
-  }
-
-  function toggleMainMod(guestIdx, modName, el) {
-    const parent = el.closest('.dish-card');
-    if (!parent.classList.contains('selected')) {
-      const dish = MAIN_DISHES.find(d => parent.id.includes(d.id));
-      toggleMainDish(guestIdx, dish.id, dish.name);
-    }
-
-    const mods = orderData[guestIdx].mainModifiers;
-    const idx = mods.indexOf(modName);
-    if (idx > -1) {
-      mods.splice(idx, 1);
-      el.classList.remove('active');
+    if (foundIdx > -1) {
+      g.mainDishes.splice(foundIdx, 1);
     } else {
-      mods.push(modName);
-      el.classList.add('active');
+      g.mainDishes.push({ id: dishId, mods: [] });
     }
+
+    renderGuests();
+    calculatePrice();
   }
 
-  function toggleExtraDish(guestIdx, dishId, dishName) {
-    const cardEl = document.getElementById(`extra-${guestIdx}-${dishId}`);
-    if (orderData[guestIdx].extraDish === dishName) {
-      orderData[guestIdx].extraDish = null;
-      orderData[guestIdx].extraBase = "";
-      orderData[guestIdx].extraModifiers = [];
-      cardEl.classList.remove('selected');
-      cardEl.querySelectorAll('.mod-chip').forEach(c => c.classList.remove('active'));
-      return;
-    }
+  function toggleMainMod(guestIdx, dishId, modName, el) {
+    const g = orderData[guestIdx];
+    let found = g.mainDishes.find(m => m.id === dishId);
 
-    orderData[guestIdx].extraDish = dishName;
-    if (!orderData[guestIdx].extraBase) orderData[guestIdx].extraBase = "На молоке";
-
-    EXTRA_DISHES.forEach(d => {
-      const el = document.getElementById(`extra-${guestIdx}-${d.id}`);
-      if (el && d.id !== dishId) {
-        el.classList.remove('selected');
-        el.querySelectorAll('.mod-chip').forEach(c => c.classList.remove('active'));
+    if (!found) {
+      found = { id: dishId, mods: [modName] };
+      g.mainDishes.push(found);
+    } else {
+      const mIdx = found.mods.indexOf(modName);
+      if (mIdx > -1) {
+        found.mods.splice(mIdx, 1);
+      } else {
+        found.mods.push(modName);
       }
-    });
-
-    cardEl.classList.add('selected');
-    const activeBase = cardEl.querySelector(`.base-chip-${guestIdx}.active`);
-    if (!activeBase) {
-      const firstBase = cardEl.querySelector(`.base-chip-${guestIdx}`);
-      if (firstBase) firstBase.classList.add('active');
     }
+
+    renderGuests();
+    calculatePrice();
+  }
+
+  function toggleExtraDish(guestIdx, dishId) {
+    const g = orderData[guestIdx];
+    const dishDef = EXTRA_DISHES.find(d => d.id === dishId);
+    const defaultBase = currentLang === 'ru' ? dishDef.bases_ru[0] : dishDef.bases_en[0];
+
+    if (g.extraDish === dishId) {
+      g.extraDish = null;
+      g.extraBase = "";
+      g.extraModifiers = [];
+    } else {
+      g.extraDish = dishId;
+      g.extraBase = defaultBase;
+      g.extraModifiers = [];
+    }
+
+    renderGuests();
   }
 
   function selectBase(guestIdx, dishId, baseName, el) {
-    const dish = EXTRA_DISHES.find(d => d.id === dishId);
-    const cardEl = document.getElementById(`extra-${guestIdx}-${dishId}`);
-    if (orderData[guestIdx].extraDish !== dish.name) toggleExtraDish(guestIdx, dishId, dish.name);
-    orderData[guestIdx].extraBase = baseName;
-    cardEl.querySelectorAll(`.base-chip-${guestIdx}`).forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
+    const g = orderData[guestIdx];
+    if (g.extraDish !== dishId) {
+      g.extraDish = dishId;
+      g.extraModifiers = [];
+    }
+    g.extraBase = baseName;
+    renderGuests();
   }
 
   function toggleExtraMod(guestIdx, dishId, modName, el) {
-    const dish = EXTRA_DISHES.find(d => d.id === dishId);
-    if (orderData[guestIdx].extraDish !== dish.name) toggleExtraDish(guestIdx, dishId, dish.name);
-    if (!orderData[guestIdx].extraModifiers) orderData[guestIdx].extraModifiers = [];
-
-    const mods = orderData[guestIdx].extraModifiers;
-    const idx = mods.indexOf(modName);
-    if (idx > -1) {
-      mods.splice(idx, 1);
-      el.classList.remove('active');
-    } else {
-      mods.push(modName);
-      el.classList.add('active');
+    const g = orderData[guestIdx];
+    const dishDef = EXTRA_DISHES.find(d => d.id === dishId);
+    if (g.extraDish !== dishId) {
+      g.extraDish = dishId;
+      g.extraBase = currentLang === 'ru' ? dishDef.bases_ru[0] : dishDef.bases_en[0];
+      g.extraModifiers = [];
     }
+    const idx = g.extraModifiers.indexOf(modName);
+    if (idx > -1) {
+      g.extraModifiers.splice(idx, 1);
+    } else {
+      g.extraModifiers.push(modName);
+    }
+    renderGuests();
   }
 
-  async function submitOrder() {
+  function calculatePrice() {
+    let totalExtraDishes = 0;
+    orderData.forEach(g => {
+      if (g.mainDishes.length > 1) {
+        totalExtraDishes += (g.mainDishes.length - 1);
+      }
+    });
+    const cost = totalExtraDishes * 350;
+    document.getElementById('totalExtraPrice').innerText = `${cost} ₽`;
+    return cost;
+  }
+
+  function openReviewModal() {
+    const dict = DICTIONARY[currentLang];
     const room = document.getElementById('roomNumber').value.trim();
     const guestName = document.getElementById('guestName').value.trim();
 
     if (!room) {
-      alert('Пожалуйста, укажите номер комнаты!');
+      alert(dict.alertRoom);
       return;
     }
     if (!guestName) {
-      alert('Пожалуйста, укажите ФИО гостя!');
+      alert(dict.alertName);
       return;
     }
 
     for (let i = 0; i < orderData.length; i++) {
-      if (!orderData[i].mainDish && !orderData[i].extraDish) {
-        alert(`Пожалуйста, выберите хотя бы одно блюдо для Гостя №${i + 1}`);
+      if (orderData[i].mainDishes.length === 0 && !orderData[i].extraDish) {
+        alert(`${dict.alertNoDish}${i + 1}`);
         return;
       }
     }
 
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.innerText = "Отправка...";
+    document.getElementById('revRoom').innerText = room;
+    document.getElementById('revName').innerText = guestName;
+    document.getElementById('revPlace').innerText = document.getElementById('deliveryPlace').value;
+    document.getElementById('revTime').innerText = document.getElementById('deliveryTime').value;
 
+    const deliverySummary = getSelectedDeliveryText(currentLang);
+    if (selectedDeliveryIds.length > 0) {
+      document.getElementById('revDelivery').innerText = deliverySummary;
+      document.getElementById('revDeliveryRow').style.display = 'flex';
+    } else {
+      document.getElementById('revDeliveryRow').style.display = 'none';
+    }
+
+    const listContainer = document.getElementById('revGuestsList');
+    listContainer.innerHTML = '';
+
+    orderData.forEach((g, idx) => {
+      const box = document.createElement('div');
+      box.className = 'modal-guest-box';
+
+      let html = `<b>${dict.guestTitle}${idx + 1}:</b><br>`;
+      if (g.mainDishes.length > 0) {
+        html += g.mainDishes.map((m, mIdx) => {
+          const d = MAIN_DISHES.find(x => x.id === m.id);
+          const name = currentLang === 'ru' ? d.name_ru : d.name_en;
+          const mods = m.mods.length > 0 ? ` (+ ${m.mods.join(', ')})` : '';
+          const extraCost = mIdx > 0 ? ' <b style="color:var(--accent);">[+350 ₽]</b>' : '';
+          return `• ${name}${mods}${extraCost}`;
+        }).join('<br>');
+      }
+
+      if (g.extraDish) {
+        const d = EXTRA_DISHES.find(x => x.id === g.extraDish);
+        const name = currentLang === 'ru' ? d.name_ru : d.name_en;
+        const mods = g.extraModifiers.length > 0 ? ` (+ ${g.extraModifiers.join(', ')})` : '';
+        html += `<br>• ${name} [${g.extraBase}${mods}]`;
+      }
+
+      box.innerHTML = html;
+      listContainer.appendChild(box);
+    });
+
+    document.getElementById('revExtraPrice').innerText = document.getElementById('totalExtraPrice').innerText;
+    document.getElementById('reviewModal').style.display = 'flex';
+  }
+
+  function closeReviewModal() {
+    document.getElementById('reviewModal').style.display = 'none';
+  }
+
+  async function submitOrder() {
+    const dict = DICTIONARY[currentLang];
+    const btn = document.getElementById('btnRevConfirm');
+    btn.disabled = true;
+    btn.innerText = dict.sending;
+
+    const room = document.getElementById('roomNumber').value.trim();
+    const guestName = document.getElementById('guestName').value.trim();
     const place = document.getElementById('deliveryPlace').value;
     const time = document.getElementById('deliveryTime').value;
     const generalComment = document.getElementById('comment').value.trim();
-    const deliverySummary = (place === "В номер") ? Object.values(deliverySelections).join(', ') : "";
+    const deliverySummary = getSelectedDeliveryText('ru');
 
-    const rows = orderData.map(g => {
-      const extraModsStr = (g.extraModifiers && g.extraModifiers.length > 0) ? g.extraModifiers.join(', ') : "";
+    const rows = orderData.map((g, idx) => {
+      const mainsFormatted = g.mainDishes.map((m, mIdx) => {
+        const d = MAIN_DISHES.find(x => x.id === m.id);
+        const name = d.name_ru;
+        const tag = mIdx === 0 ? '' : ' [+350₽]';
+        const mods = m.mods.length > 0 ? ` (+ ${m.mods.join(', ')})` : '';
+        return `${name}${mods}${tag}`;
+      }).join('; ');
+
+      const extraDef = EXTRA_DISHES.find(d => d.id === g.extraDish);
+      const extraName = extraDef ? extraDef.name_ru : '';
+
       return {
         "room": room,
-        "guest_name": guestName,
+        "guest_name": `${guestName} (Гость ${idx + 1})`,
         "time": time,
         "place": place,
-        "main": g.mainDish || "",
-        "main_mods": (g.mainModifiers && g.mainModifiers.length > 0) ? g.mainModifiers.join(', ') : "",
-        "extra": g.extraDish || "",
+        "main": mainsFormatted,
+        "main_mods": "",
+        "extra": extraName,
         "extra_base": g.extraDish ? (g.extraBase || "На молоке") : "",
-        "extra_mods": extraModsStr,
+        "extra_mods": (g.extraModifiers && g.extraModifiers.length > 0) ? g.extraModifiers.join(', ') : "",
         "delivery_options": deliverySummary,
         "comment": generalComment
       };
@@ -500,6 +970,7 @@
       });
 
       if (response.ok) {
+        closeReviewModal();
         document.getElementById('successModal').style.display = 'flex';
       } else {
         const err = await response.text();
@@ -509,7 +980,7 @@
       alert("Сетевая ошибка: " + e);
     } finally {
       btn.disabled = false;
-      btn.innerText = "Оформить заказ";
+      btn.innerText = dict.btnConfirm;
     }
   }
 
@@ -517,20 +988,23 @@
     document.getElementById('roomNumber').value = '';
     document.getElementById('guestName').value = '';
     document.getElementById('comment').value = '';
-    deliverySelections = {};
-    document.querySelectorAll('#deliveryOptionsBlock .chip-btn').forEach(b => b.classList.remove('active'));
+    selectedDeliveryIds = [];
+    renderDeliveryChips();
     document.getElementById('successModal').style.display = 'none';
     renderGuests();
+    calculatePrice();
     checkCapacity();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
+      renderDeliveryChips();
       renderGuests();
       checkCapacity();
     });
   } else {
+    renderDeliveryChips();
     renderGuests();
     checkCapacity();
   }
