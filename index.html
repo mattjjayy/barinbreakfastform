@@ -495,6 +495,15 @@
       mods_ru: [], mods_en: [] 
     },
     { 
+      id: "blini_ham_cheese", 
+      name_ru: "Блины с ветчиной и сыром", 
+      name_en: "Pancakes with ham & cheese",
+      desc_ru: "Сытные горячие блины", 
+      desc_en: "Savory rolled pancakes with ham and cheese",
+      img: "blini_ham_cheese.jpg", 
+      mods_ru: [], mods_en: [] 
+    },
+    { 
       id: "caesar_sandwich", 
       name_ru: 'Сендвич "Цезарь" с куриным филе гриль', 
       name_en: 'Caesar sandwich with grilled chicken',
@@ -561,8 +570,12 @@
     document.getElementById('submitBtn').innerText = dict.btnOrder;
 
     const placeSel = document.getElementById('deliveryPlace');
-    placeSel.options[0].text = dict.placeCafe;
-    placeSel.options[1].text = dict.placeRoom;
+    if (placeSel && placeSel.options.length >= 2) {
+      placeSel.options[0].value = "Кафе";
+      placeSel.options[0].text = dict.placeCafe;
+      placeSel.options[1].value = "В номер";
+      placeSel.options[1].text = dict.placeRoom;
+    }
 
     const countSel = document.getElementById('guestsCount');
     Array.from(countSel.options).forEach((opt, idx) => {
@@ -592,7 +605,7 @@
   function handlePlaceChange() {
     const place = document.getElementById('deliveryPlace').value;
     const block = document.getElementById('deliveryOptionsBlock');
-    block.style.display = (place === "В номер" || place === "Кафе" && false || place.includes("номер") || place.includes("Room")) ? "block" : "none";
+    block.style.display = (place === "В номер" || place.includes("номер") || place.includes("Room")) ? "block" : "none";
   }
 
   function renderDeliveryChips() {
@@ -745,12 +758,12 @@
             <div class="dish-desc">${desc}</div>
           </div>
           <div class="modifiers" onclick="event.stopPropagation()">
-            ${bases.map(b => `<div class="mod-chip base-chip-${guestIdx} ${isSelected && currentBase === b ? 'active' : ''}" onclick="selectBase(${guestIdx}, '${dish.id}', '${b}', this)">${b}</div>`).join('')}
+            ${bases.map(b => `<div class="mod-chip base-chip-${guestIdx}${isSelected && currentBase === b ? 'active' : ''}" onclick="selectBase(${guestIdx}, '${dish.id}', '${b}', this)">${b}</div>`).join('')}
           </div>
           <div class="modifiers" style="margin-top:4px; padding-top:4px; border:none;" onclick="event.stopPropagation()">
             ${mods.map(m => {
               const isActive = isSelected && g.extraModifiers.includes(m);
-              return `<div class="mod-chip extra-mod-chip-${guestIdx} ${isActive ? 'active' : ''}" onclick="toggleExtraMod(${guestIdx}, '${dish.id}', '${m}', this)">+ ${m}</div>`;
+              return `<div class="mod-chip extra-mod-chip-${guestIdx}${isActive ? 'active' : ''}" onclick="toggleExtraMod(${guestIdx}, '${dish.id}', '${m}', this)">+ ${m}</div>`;
             }).join('')}
           </div>
         </div>
@@ -870,13 +883,17 @@
       }
     }
 
+    const rawPlace = document.getElementById('deliveryPlace').value;
+    const isRoom = (rawPlace === "В номер" || rawPlace.includes("номер") || rawPlace.includes("Room"));
+    const displayPlace = isRoom ? dict.placeRoom : dict.placeCafe;
+
     document.getElementById('revRoom').innerText = room;
     document.getElementById('revName').innerText = guestName;
-    document.getElementById('revPlace').innerText = document.getElementById('deliveryPlace').value;
+    document.getElementById('revPlace').innerText = displayPlace;
     document.getElementById('revTime').innerText = document.getElementById('deliveryTime').value;
 
     const deliverySummary = getSelectedDeliveryText(currentLang);
-    if (selectedDeliveryIds.length > 0) {
+    if (isRoom && selectedDeliveryIds.length > 0) {
       document.getElementById('revDelivery').innerText = deliverySummary;
       document.getElementById('revDeliveryRow').style.display = 'flex';
     } else {
@@ -928,10 +945,14 @@
 
     const room = document.getElementById('roomNumber').value.trim();
     const guestName = document.getElementById('guestName').value.trim();
-    const place = document.getElementById('deliveryPlace').value;
+    
+    // Строгая фиксация значения для Stein / Google Sheets
+    const rawPlace = document.getElementById('deliveryPlace').value;
+    const finalPlace = (rawPlace === "В номер" || rawPlace.includes("номер") || rawPlace.includes("Room")) ? "В номер" : "Кафе";
+
     const time = document.getElementById('deliveryTime').value;
     const generalComment = document.getElementById('comment').value.trim();
-    const deliverySummary = getSelectedDeliveryText('ru');
+    const deliverySummary = (finalPlace === "В номер") ? getSelectedDeliveryText('ru') : "";
 
     const rows = orderData.map((g, idx) => {
       const mainsFormatted = g.mainDishes.map((m, mIdx) => {
@@ -949,7 +970,7 @@
         "room": room,
         "guest_name": `${guestName} (Гость ${idx + 1})`,
         "time": time,
-        "place": place,
+        "place": finalPlace,
         "main": mainsFormatted,
         "main_mods": "",
         "extra": extraName,
