@@ -92,7 +92,7 @@
 
     .modifiers { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 6px; }
     .mod-chip { font-size: 11px; padding: 6px 10px; background: #1a1a1e; border: 1px solid var(--border); border-radius: 20px; cursor: pointer; user-select: none; transition: 0.15s; }
-    .mod-chip.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+    .mod-chip.active { background: var(--accent) !important; color: #000 !important; border-color: var(--accent) !important; font-weight: 600; }
 
     .footer-bar {
       position: fixed; bottom: 0; left: 0; right: 0; background: rgba(26, 26, 30, 0.95); backdrop-filter: blur(10px);
@@ -400,8 +400,11 @@
       desc_ru: "нежный омлет с добавками", 
       desc_en: "tender omelette with add-ins",
       img: "omlet.jpg", 
-      mods_ru: ["Ветчина", "Сыр", "Помидор"],
-      mods_en: ["Ham", "Cheese", "Tomato"]
+      mods: [
+        { id: "ham", ru: "Ветчина", en: "Ham" },
+        { id: "cheese", ru: "Сыр", en: "Cheese" },
+        { id: "tomato", ru: "Помидор", en: "Tomato" }
+      ]
     },
     { 
       id: "glazunya", 
@@ -410,8 +413,11 @@
       desc_ru: "Яичница из двух яиц", 
       desc_en: "Two fried eggs with toppings",
       img: "glazunya.jpg", 
-      mods_ru: ["Ветчина", "Сыр", "Помидор"],
-      mods_en: ["Ham", "Cheese", "Tomato"]
+      mods: [
+        { id: "ham", ru: "Ветчина", en: "Ham" },
+        { id: "cheese", ru: "Сыр", en: "Cheese" },
+        { id: "tomato", ru: "Помидор", en: "Tomato" }
+      ]
     },
     { 
       id: "brioche", 
@@ -420,7 +426,7 @@
       desc_ru: "С салатом и сыром Чеддер", 
       desc_en: "With lettuce and Cheddar cheese",
       img: "brioche.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "croissant_salmon", 
@@ -429,7 +435,7 @@
       desc_ru: "Свежая выпечка и семга", 
       desc_en: "Freshly baked pastry with salted salmon",
       img: "croissant_salmon.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "croissant_nutella", 
@@ -438,7 +444,7 @@
       desc_ru: "Сладкий круассан", 
       desc_en: "Sweet baked croissant with Nutella",
       img: "croissant_nutella.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "croissant_tomato", 
@@ -447,7 +453,7 @@
       desc_ru: "Легкий круассан", 
       desc_en: "Light croissant with tomatoes",
       img: "croissant_tomato.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "syrniki", 
@@ -456,7 +462,7 @@
       desc_ru: "Классические сырники", 
       desc_en: "With berries, jam, and sour cream",
       img: "syrniki.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "syrniki_salt", 
@@ -465,7 +471,7 @@
       desc_ru: "Пикантные сырники с вялеными томатами", 
       desc_en: "Savory syrniki with sun-dried tomatoes",
       img: "syrniki_salt.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "blini_tvorog", 
@@ -474,7 +480,7 @@
       desc_ru: "Сладкие блинчики", 
       desc_en: "Sweet rolled pancakes",
       img: "blini_tvorog.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "blini_banana_choc", 
@@ -483,7 +489,7 @@
       desc_ru: "Десертные блины", 
       desc_en: "Dessert rolled pancakes",
       img: "blini_banana_choc.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "blini_salmon", 
@@ -492,7 +498,7 @@
       desc_ru: "Сытные блины с рыбой", 
       desc_en: "Savory rolled pancakes",
       img: "blini_salmon.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "blini_ham_cheese", 
@@ -501,7 +507,7 @@
       desc_ru: "Сытные горячие блины", 
       desc_en: "Savory rolled pancakes with ham and cheese",
       img: "blini_ham_cheese.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     },
     { 
       id: "caesar_sandwich", 
@@ -510,7 +516,7 @@
       desc_ru: "С фирменным соусом", 
       desc_en: "With signature Caesar sauce",
       img: "caesar_sandwich.jpg", 
-      mods_ru: [], mods_en: [] 
+      mods: [] 
     }
   ];
 
@@ -522,10 +528,15 @@
       desc_ru: "Выберите основу и добавки", 
       desc_en: "Choose base & toppings",
       img: "oatmeal.jpg", 
-      bases_ru: ["На молоке", "На воде", "На молоке (БЕЗ САХАРА)"],
-      bases_en: ["Milk", "Water", "Milk (NO SUGAR)"],
-      mods_ru: ["Фрукты", "Орехи"],
-      mods_en: ["Fruits", "Nuts"]
+      bases: [
+        { id: "milk", ru: "На молоке", en: "Milk" },
+        { id: "water", ru: "На воде", en: "Water" },
+        { id: "milk_no_sugar", ru: "На молоке (БЕЗ САХАРА)", en: "Milk (NO SUGAR)" }
+      ],
+      mods: [
+        { id: "fruits", ru: "Фрукты", en: "Fruits" },
+        { id: "nuts", ru: "Орехи", en: "Nuts" }
+      ]
     },
     { 
       id: "rice_porridge", 
@@ -534,10 +545,15 @@
       desc_ru: "Выберите основу и добавки", 
       desc_en: "Choose base & toppings",
       img: "rice_porridge.jpg", 
-      bases_ru: ["На молоке", "На воде", "На молоке (БЕЗ САХАРА)"],
-      bases_en: ["Milk", "Water", "Milk (NO SUGAR)"],
-      mods_ru: ["Фрукты", "Орехи"],
-      mods_en: ["Fruits", "Nuts"]
+      bases: [
+        { id: "milk", ru: "На молоке", en: "Milk" },
+        { id: "water", ru: "На воде", en: "Water" },
+        { id: "milk_no_sugar", ru: "На молоке (БЕЗ САХАРА)", en: "Milk (NO SUGAR)" }
+      ],
+      mods: [
+        { id: "fruits", ru: "Фрукты", en: "Fruits" },
+        { id: "nuts", ru: "Орехи", en: "Nuts" }
+      ]
     }
   ];
 
@@ -675,7 +691,7 @@
     if (!container) return;
 
     while (orderData.length < count) {
-      orderData.push({ mainDishes: [], extraDish: null, extraBase: "", extraModifiers: [] });
+      orderData.push({ mainDishes: [], extraDish: null, extraBase: "milk", extraModifiers: [] });
     }
     while (orderData.length > count) {
       orderData.pop();
@@ -715,7 +731,6 @@
 
     const name = currentLang === 'ru' ? dish.name_ru : dish.name_en;
     const desc = currentLang === 'ru' ? dish.desc_ru : dish.desc_en;
-    const mods = currentLang === 'ru' ? dish.mods_ru : dish.mods_en;
 
     return `
       <div class="dish-card ${isSelected ? 'selected' : ''}" id="main-${guestIdx}-${dish.id}" onclick="toggleMainDish(${guestIdx}, '${dish.id}')">
@@ -725,11 +740,12 @@
             <div class="dish-name">${name}</div>
             <div class="dish-desc">${desc}</div>
           </div>
-          ${mods && mods.length > 0 ? `
+          ${dish.mods && dish.mods.length > 0 ? `
             <div class="modifiers" onclick="event.stopPropagation()">
-              ${mods.map(m => {
-                const isActive = selectedItem && selectedItem.mods.includes(m);
-                return `<div class="mod-chip ${isActive ? 'active' : ''}" onclick="toggleMainMod(${guestIdx}, '${dish.id}', '${m}', this)">+ ${m}</div>`;
+              ${dish.mods.map(m => {
+                const isActive = selectedItem && selectedItem.mods.includes(m.id);
+                const modText = currentLang === 'ru' ? m.ru : m.en;
+                return `<div class="mod-chip ${isActive ? 'active' : ''}" id="mainmod-${guestIdx}-${dish.id}-${m.id}" onclick="toggleMainMod(${guestIdx}, '${dish.id}', '${m.id}', this)">+ ${modText}</div>`;
               }).join('')}
             </div>
           ` : ''}
@@ -744,10 +760,7 @@
 
     const name = currentLang === 'ru' ? dish.name_ru : dish.name_en;
     const desc = currentLang === 'ru' ? dish.desc_ru : dish.desc_en;
-    const bases = currentLang === 'ru' ? dish.bases_ru : dish.bases_en;
-    const mods = currentLang === 'ru' ? dish.mods_ru : dish.mods_en;
-
-    const currentBase = g.extraBase || bases[0];
+    const currentBase = g.extraBase || "milk";
 
     return `
       <div class="dish-card ${isSelected ? 'selected' : ''}" id="extra-${guestIdx}-${dish.id}" onclick="toggleExtraDish(${guestIdx}, '${dish.id}')">
@@ -758,12 +771,17 @@
             <div class="dish-desc">${desc}</div>
           </div>
           <div class="modifiers" onclick="event.stopPropagation()">
-            ${bases.map(b => `<div class="mod-chip base-chip-${guestIdx}${isSelected && currentBase === b ? 'active' : ''}" onclick="selectBase(${guestIdx}, '${dish.id}', '${b}', this)">${b}</div>`).join('')}
+            ${dish.bases.map(b => {
+              const isActive = isSelected && currentBase === b.id;
+              const baseText = currentLang === 'ru' ? b.ru : b.en;
+              return `<div class="mod-chip base-chip-${guestIdx}-${dish.id}${isActive ? 'active' : ''}" onclick="selectBase(${guestIdx}, '${dish.id}', '${b.id}', this)">${baseText}</div>`;
+            }).join('')}
           </div>
           <div class="modifiers" style="margin-top:4px; padding-top:4px; border:none;" onclick="event.stopPropagation()">
-            ${mods.map(m => {
-              const isActive = isSelected && g.extraModifiers.includes(m);
-              return `<div class="mod-chip extra-mod-chip-${guestIdx}${isActive ? 'active' : ''}" onclick="toggleExtraMod(${guestIdx}, '${dish.id}', '${m}', this)">+ ${m}</div>`;
+            ${dish.mods.map(m => {
+              const isActive = isSelected && g.extraModifiers.includes(m.id);
+              const modText = currentLang === 'ru' ? m.ru : m.en;
+              return `<div class="mod-chip extramod-${guestIdx}-${dish.id}${isActive ? 'active' : ''}" onclick="toggleExtraMod(${guestIdx}, '${dish.id}', '${m.id}', this)">+ ${modText}</div>`;
             }).join('')}
           </div>
         </div>
@@ -774,80 +792,109 @@
   function toggleMainDish(guestIdx, dishId) {
     const g = orderData[guestIdx];
     const foundIdx = g.mainDishes.findIndex(m => m.id === dishId);
+    const cardEl = document.getElementById(`main-${guestIdx}-${dishId}`);
 
     if (foundIdx > -1) {
       g.mainDishes.splice(foundIdx, 1);
+      if (cardEl) {
+        cardEl.classList.remove('selected');
+        cardEl.querySelectorAll('.mod-chip').forEach(c => c.classList.remove('active'));
+      }
     } else {
       g.mainDishes.push({ id: dishId, mods: [] });
+      if (cardEl) cardEl.classList.add('selected');
     }
 
-    renderGuests();
     calculatePrice();
   }
 
-  function toggleMainMod(guestIdx, dishId, modName, el) {
+  function toggleMainMod(guestIdx, dishId, modId, el) {
     const g = orderData[guestIdx];
     let found = g.mainDishes.find(m => m.id === dishId);
+    const cardEl = document.getElementById(`main-${guestIdx}-${dishId}`);
 
     if (!found) {
-      found = { id: dishId, mods: [modName] };
+      found = { id: dishId, mods: [modId] };
       g.mainDishes.push(found);
+      if (cardEl) cardEl.classList.add('selected');
+      el.classList.add('active');
     } else {
-      const mIdx = found.mods.indexOf(modName);
+      const mIdx = found.mods.indexOf(modId);
       if (mIdx > -1) {
         found.mods.splice(mIdx, 1);
+        el.classList.remove('active');
       } else {
-        found.mods.push(modName);
+        found.mods.push(modId);
+        el.classList.add('active');
       }
     }
 
-    renderGuests();
     calculatePrice();
   }
 
   function toggleExtraDish(guestIdx, dishId) {
     const g = orderData[guestIdx];
-    const dishDef = EXTRA_DISHES.find(d => d.id === dishId);
-    const defaultBase = currentLang === 'ru' ? dishDef.bases_ru[0] : dishDef.bases_en[0];
+    const cardEl = document.getElementById(`extra-${guestIdx}-${dishId}`);
 
     if (g.extraDish === dishId) {
       g.extraDish = null;
-      g.extraBase = "";
       g.extraModifiers = [];
-    } else {
-      g.extraDish = dishId;
-      g.extraBase = defaultBase;
-      g.extraModifiers = [];
+      if (cardEl) {
+        cardEl.classList.remove('selected');
+        cardEl.querySelectorAll('.mod-chip').forEach(c => c.classList.remove('active'));
+      }
+      return;
     }
 
-    renderGuests();
+    // Снимаем выбор с предыдущей каши
+    EXTRA_DISHES.forEach(d => {
+      const el = document.getElementById(`extra-${guestIdx}-${d.id}`);
+      if (el) {
+        el.classList.remove('selected');
+        el.querySelectorAll('.mod-chip').forEach(c => c.classList.remove('active'));
+      }
+    });
+
+    g.extraDish = dishId;
+    if (!g.extraBase) g.extraBase = "milk";
+
+    if (cardEl) {
+      cardEl.classList.add('selected');
+      // Подсвечиваем выбранную базу (по умолчанию молочную)
+      const baseChips = cardEl.querySelectorAll(`.base-chip-${guestIdx}-${dishId}`);
+      if (baseChips.length > 0) baseChips[0].classList.add('active');
+    }
   }
 
-  function selectBase(guestIdx, dishId, baseName, el) {
+  function selectBase(guestIdx, dishId, baseId, el) {
     const g = orderData[guestIdx];
+    const cardEl = document.getElementById(`extra-${guestIdx}-${dishId}`);
+
     if (g.extraDish !== dishId) {
-      g.extraDish = dishId;
-      g.extraModifiers = [];
+      toggleExtraDish(guestIdx, dishId);
     }
-    g.extraBase = baseName;
-    renderGuests();
+
+    g.extraBase = baseId;
+    if (cardEl) {
+      cardEl.querySelectorAll(`.base-chip-${guestIdx}-${dishId}`).forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
   }
 
-  function toggleExtraMod(guestIdx, dishId, modName, el) {
+  function toggleExtraMod(guestIdx, dishId, modId, el) {
     const g = orderData[guestIdx];
-    const dishDef = EXTRA_DISHES.find(d => d.id === dishId);
     if (g.extraDish !== dishId) {
-      g.extraDish = dishId;
-      g.extraBase = currentLang === 'ru' ? dishDef.bases_ru[0] : dishDef.bases_en[0];
-      g.extraModifiers = [];
+      toggleExtraDish(guestIdx, dishId);
     }
-    const idx = g.extraModifiers.indexOf(modName);
+
+    const idx = g.extraModifiers.indexOf(modId);
     if (idx > -1) {
       g.extraModifiers.splice(idx, 1);
+      el.classList.remove('active');
     } else {
-      g.extraModifiers.push(modName);
+      g.extraModifiers.push(modId);
+      el.classList.add('active');
     }
-    renderGuests();
   }
 
   function calculatePrice() {
@@ -912,7 +959,11 @@
         html += g.mainDishes.map((m, mIdx) => {
           const d = MAIN_DISHES.find(x => x.id === m.id);
           const name = currentLang === 'ru' ? d.name_ru : d.name_en;
-          const mods = m.mods.length > 0 ? ` (+ ${m.mods.join(', ')})` : '';
+          const modsList = m.mods.map(modId => {
+            const foundMod = d.mods.find(x => x.id === modId);
+            return foundMod ? (currentLang === 'ru' ? foundMod.ru : foundMod.en) : modId;
+          });
+          const mods = modsList.length > 0 ? ` (+ ${modsList.join(', ')})` : '';
           const extraCost = mIdx > 0 ? ' <b style="color:var(--accent);">[+350 ₽]</b>' : '';
           return `• ${name}${mods}${extraCost}`;
         }).join('<br>');
@@ -921,8 +972,14 @@
       if (g.extraDish) {
         const d = EXTRA_DISHES.find(x => x.id === g.extraDish);
         const name = currentLang === 'ru' ? d.name_ru : d.name_en;
-        const mods = g.extraModifiers.length > 0 ? ` (+ ${g.extraModifiers.join(', ')})` : '';
-        html += `<br>• ${name} [${g.extraBase}${mods}]`;
+        const baseObj = d.bases.find(b => b.id === g.extraBase) || d.bases[0];
+        const baseText = currentLang === 'ru' ? baseObj.ru : baseObj.en;
+        const modsList = g.extraModifiers.map(modId => {
+          const foundMod = d.mods.find(x => x.id === modId);
+          return foundMod ? (currentLang === 'ru' ? foundMod.ru : foundMod.en) : modId;
+        });
+        const mods = modsList.length > 0 ? ` (+ ${modsList.join(', ')})` : '';
+        html += `<br>• ${name} [${baseText}${mods}]`;
       }
 
       box.innerHTML = html;
@@ -959,12 +1016,25 @@
         const d = MAIN_DISHES.find(x => x.id === m.id);
         const name = d.name_ru;
         const tag = mIdx === 0 ? '' : ' [+350₽]';
-        const mods = m.mods.length > 0 ? ` (+ ${m.mods.join(', ')})` : '';
+        const modsList = m.mods.map(modId => {
+          const foundMod = d.mods.find(x => x.id === modId);
+          return foundMod ? foundMod.ru : modId;
+        });
+        const mods = modsList.length > 0 ? ` (+ ${modsList.join(', ')})` : '';
         return `${name}${mods}${tag}`;
       }).join('; ');
 
       const extraDef = EXTRA_DISHES.find(d => d.id === g.extraDish);
       const extraName = extraDef ? extraDef.name_ru : '';
+      let extraBaseText = "";
+      if (extraDef) {
+        const bObj = extraDef.bases.find(b => b.id === g.extraBase) || extraDef.bases[0];
+        extraBaseText = bObj.ru;
+      }
+      const extraModsList = extraDef ? g.extraModifiers.map(modId => {
+        const foundMod = extraDef.mods.find(x => x.id === modId);
+        return foundMod ? foundMod.ru : modId;
+      }) : [];
 
       return {
         "room": room,
@@ -974,8 +1044,8 @@
         "main": mainsFormatted,
         "main_mods": "",
         "extra": extraName,
-        "extra_base": g.extraDish ? (g.extraBase || "На молоке") : "",
-        "extra_mods": (g.extraModifiers && g.extraModifiers.length > 0) ? g.extraModifiers.join(', ') : "",
+        "extra_base": extraBaseText,
+        "extra_mods": extraModsList.join(', '),
         "delivery_options": deliverySummary,
         "comment": generalComment
       };
