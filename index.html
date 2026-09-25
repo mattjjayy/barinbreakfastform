@@ -421,7 +421,7 @@
     },
     { 
       id: "brioche", 
-      name_ru: "Злаковая бриошь с беконом, жареным яйцом, с", 
+      name_ru: "Злаковая бриошь с беконом, жареным яйцом", 
       name_en: "Cereal brioche with bacon & fried egg",
       desc_ru: "С салатом и сыром Чеддер", 
       desc_en: "With lettuce and Cheddar cheese",
@@ -448,10 +448,10 @@
     },
     { 
       id: "croissant_tomato", 
-      name_ru: "Круассан с томатом и помидором", 
-      name_en: "Tomato & herb croissant",
+      name_ru: "Круассан с сыром и помидором", 
+      name_en: "Cheese & tomato croissant",
       desc_ru: "Легкий круассан", 
-      desc_en: "Light croissant with tomatoes",
+      desc_en: "Light croissant with cheese and tomatoes",
       img: "croissant_tomato.jpg", 
       mods: [] 
     },
@@ -846,7 +846,6 @@
       return;
     }
 
-    // Снимаем выбор с предыдущей каши
     EXTRA_DISHES.forEach(d => {
       const el = document.getElementById(`extra-${guestIdx}-${d.id}`);
       if (el) {
@@ -860,7 +859,6 @@
 
     if (cardEl) {
       cardEl.classList.add('selected');
-      // Подсвечиваем выбранную базу (по умолчанию молочную)
       const baseChips = cardEl.querySelectorAll(`.base-chip-${guestIdx}-${dishId}`);
       if (baseChips.length > 0) baseChips[0].classList.add('active');
     }
@@ -1003,7 +1001,6 @@
     const room = document.getElementById('roomNumber').value.trim();
     const guestName = document.getElementById('guestName').value.trim();
     
-    // Строгая фиксация значения для Stein / Google Sheets
     const rawPlace = document.getElementById('deliveryPlace').value;
     const finalPlace = (rawPlace === "В номер" || rawPlace.includes("номер") || rawPlace.includes("Room")) ? "В номер" : "Кафе";
 
