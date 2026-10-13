@@ -69,6 +69,28 @@
     }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
 
+    /* Блок для времени и подсказки о раннем завтраке */
+    .time-container {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .time-container select {
+      flex: 1;
+    }
+    .early-breakfast-hint {
+      flex: 1.2;
+      background: rgba(212, 175, 55, 0.08);
+      border: 1px dashed rgba(212, 175, 55, 0.4);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      color: #e5cf8b;
+      display: flex;
+      align-items: center;
+      line-height: 1.35;
+    }
+
     #deliveryOptionsBlock { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); }
     .delivery-group { margin-bottom: 14px; }
     .delivery-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #fff; }
@@ -124,6 +146,12 @@
     .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
     .modal-btn { background: #333; color: #fff; border: none; padding: 12px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; flex: 1; text-align: center; }
     .modal-btn-confirm { background: var(--accent); color: #000; font-weight: 700; }
+
+    @media (max-width: 480px) {
+      .time-container {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
@@ -166,22 +194,28 @@
           <option value="В номер">В номер</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="grid-column: 1 / -1;">
         <label id="tTime">Желаемое время подачи *</label>
-        <select id="deliveryTime">
-          <option value="8:00:00">8:00</option>
-          <option value="8:15:00">8:15</option>
-          <option value="8:30:00">8:30</option>
-          <option value="8:45:00">8:45</option>
-          <option value="9:00:00">9:00</option>
-          <option value="9:15:00">9:15</option>
-          <option value="9:30:00">9:30</option>
-          <option value="9:45:00">9:45</option>
-          <option value="10:00:00">10:00</option>
-          <option value="10:15:00">10:15</option>
-          <option value="10:30:00">10:30</option>
-          <option value="10:45:00">10:45</option>
-        </select>
+        <div class="time-container">
+          <select id="deliveryTime" required>
+            <option value="" disabled selected id="optTimePlaceholder">Выберите время...</option>
+            <option value="8:00:00">8:00</option>
+            <option value="8:15:00">8:15</option>
+            <option value="8:30:00">8:30</option>
+            <option value="8:45:00">8:45</option>
+            <option value="9:00:00">9:00</option>
+            <option value="9:15:00">9:15</option>
+            <option value="9:30:00">9:30</option>
+            <option value="9:45:00">9:45</option>
+            <option value="10:00:00">10:00</option>
+            <option value="10:15:00">10:15</option>
+            <option value="10:30:00">10:30</option>
+            <option value="10:45:00">10:45</option>
+          </select>
+          <div class="early-breakfast-hint" id="tEarlyHint">
+            ℹ️ Для заказа раннего завтрака обратитесь на ресепшен
+          </div>
+        </div>
       </div>
     </div>
 
@@ -284,6 +318,8 @@
       placeCafe: "Кафе (9 этаж)",
       placeRoom: "В номер",
       time: "Желаемое время подачи *",
+      timePlaceholder: "Выберите время...",
+      earlyHint: "ℹ️ Для заказа раннего завтрака обратитесь на ресепшен",
       deliveryHead: "🛎 Дополнительно для подачи в номер:",
       bread: "1. Хлеб:",
       drinks: "2. Напитки в номер:",
@@ -313,6 +349,7 @@
       successBtn: "Сделать еще заказ",
       alertRoom: "Пожалуйста, укажите номер комнаты!",
       alertName: "Пожалуйста, укажите ФИО гостя!",
+      alertTime: "Пожалуйста, выберите желаемое время подачи!",
       alertNoDish: "Пожалуйста, выберите хотя бы одно блюдо для Гостя №",
       sending: "Отправка..."
     },
@@ -328,6 +365,8 @@
       placeCafe: "Cafe (9th floor)",
       placeRoom: "Room delivery",
       time: "Preferred time *",
+      timePlaceholder: "Select time...",
+      earlyHint: "ℹ️ Contact reception for early breakfast orders",
       deliveryHead: "🛎 Extra for room delivery:",
       bread: "1. Bread:",
       drinks: "2. Beverages:",
@@ -357,6 +396,7 @@
       successBtn: "Place another order",
       alertRoom: "Please enter your room number!",
       alertName: "Please enter your full name!",
+      alertTime: "Please select delivery time!",
       alertNoDish: "Please select at least one dish for Guest #",
       sending: "Sending..."
     }
@@ -574,6 +614,17 @@
     document.getElementById('tCount').innerText = dict.count;
     document.getElementById('tPlace').innerText = dict.place;
     document.getElementById('tTime').innerText = dict.time;
+    
+    const timePlaceholder = document.getElementById('optTimePlaceholder');
+    if (timePlaceholder) {
+      timePlaceholder.text = dict.timePlaceholder;
+    }
+
+    const earlyHint = document.getElementById('tEarlyHint');
+    if (earlyHint) {
+      earlyHint.innerText = dict.earlyHint;
+    }
+
     document.getElementById('tDeliveryHead').innerText = dict.deliveryHead;
     document.getElementById('tBread').innerText = dict.bread;
     document.getElementById('tDrinks').innerText = dict.drinks;
@@ -675,7 +726,7 @@
 
       const select = document.getElementById('deliveryTime');
       Array.from(select.options).forEach(opt => {
-        if ((counts[opt.value] || 0) >= 5) {
+        if (opt.value && (counts[opt.value] || 0) >= 5) {
           opt.disabled = true;
           opt.text = opt.text.replace(" (занято)", "") + " (занято)";
         }
@@ -911,6 +962,7 @@
     const dict = DICTIONARY[currentLang];
     const room = document.getElementById('roomNumber').value.trim();
     const guestName = document.getElementById('guestName').value.trim();
+    const deliveryTime = document.getElementById('deliveryTime').value;
 
     if (!room) {
       alert(dict.alertRoom);
@@ -918,6 +970,10 @@
     }
     if (!guestName) {
       alert(dict.alertName);
+      return;
+    }
+    if (!deliveryTime) {
+      alert(dict.alertTime);
       return;
     }
 
@@ -935,7 +991,7 @@
     document.getElementById('revRoom').innerText = room;
     document.getElementById('revName').innerText = guestName;
     document.getElementById('revPlace').innerText = displayPlace;
-    document.getElementById('revTime').innerText = document.getElementById('deliveryTime').value;
+    document.getElementById('revTime').innerText = deliveryTime;
 
     const deliverySummary = getSelectedDeliveryText(currentLang);
     if (isRoom && selectedDeliveryIds.length > 0) {
@@ -1075,6 +1131,7 @@
   function resetForm() {
     document.getElementById('roomNumber').value = '';
     document.getElementById('guestName').value = '';
+    document.getElementById('deliveryTime').value = '';
     document.getElementById('comment').value = '';
     selectedDeliveryIds = [];
     renderDeliveryChips();
