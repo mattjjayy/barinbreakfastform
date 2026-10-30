@@ -69,7 +69,6 @@
     }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
 
-    /* Блок для времени и подсказки о раннем завтраке */
     .time-container {
       display: flex;
       gap: 12px;
@@ -179,7 +178,7 @@
       </div>
       <div class="form-group">
         <label id="tCount">Количество персон</label>
-        <select id="guestsCount" onchange="renderGuests()">
+        <select id="guestsCount" onchange="handleGuestsCountChange()">
           <option value="1">1 гость</option>
           <option value="2">2 гостя</option>
           <option value="3">3 гостя</option>
@@ -303,6 +302,8 @@
 
 <script>
   const STEIN_URL = "https://api.steinhq.com/v1/storages/6a9c59c692b1163e973d508c/answers";
+  const MAX_SLOT_CAPACITY = 5;
+  let slotBookedCounts = {};
   let currentLang = 'ru';
 
   const DICTIONARY = {
@@ -320,6 +321,12 @@
       time: "Желаемое время подачи *",
       timePlaceholder: "Выберите время...",
       earlyHint: "ℹ️ Для заказа раннего завтрака обратитесь на ресепшен",
+      slotFull: "мест нет",
+      slotLeft: "осталось",
+      slotWordOne: "место",
+      slotWordFew: "места",
+      slotWordMany: "мест",
+      slotNotEnough: "недостаточно мест",
       deliveryHead: "🛎 Дополнительно для подачи в номер:",
       bread: "1. Хлеб:",
       drinks: "2. Напитки в номер:",
@@ -367,6 +374,12 @@
       time: "Preferred time *",
       timePlaceholder: "Select time...",
       earlyHint: "ℹ️ Contact reception for early breakfast orders",
+      slotFull: "fully booked",
+      slotLeft: "left",
+      slotWordOne: "seat left",
+      slotWordFew: "seats left",
+      slotWordMany: "seats left",
+      slotNotEnough: "not enough seats",
       deliveryHead: "🛎 Extra for room delivery:",
       bread: "1. Bread:",
       drinks: "2. Beverages:",
@@ -600,6 +613,81 @@
   let orderData = [];
   let selectedDeliveryIds = [];
 
+  function getNoun(number, one, few, many) {
+    let n = Math.abs(number) % 100;
+    let n1 = n % 10;
+    if (n > 10 && n < 20) return many;
+    if (n1 > 1 && n1 < 5) return few;
+    if (n1 === 1) return one;
+    return many;
+  }
+
+  function updateTimeSelectOptions() {
+    const select = document.getElementById('deliveryTime');
+    const guestsCount = parseInt(document.getElementById('guestsCount').value) || 1;
+    const dict = DICTIONARY[currentLang];
+
+    Array.from(select.options).forEach(opt => {
+      if (!opt.value) return;
+
+      const booked = slotBookedCounts[opt.value] || 0;
+      const remaining = Math.max(0, MAX_SLOT_CAPACITY - booked);
+      const baseTime = opt.value.replace(/:00$/, '');
+
+      if (remaining <= 0) {
+        opt.disabled = true;
+        opt.text = `${baseTime} (${dict.slotFull})`;
+      } else if (remaining < guestsCount) {
+        opt.disabled = true;
+        if (currentLang === 'ru') {
+          const word = getNoun(remaining, dict.slotWordOne, dict.slotWordFew, dict.slotWordMany);
+          opt.text = `${baseTime} (${dict.slotLeft} ${remaining} ${word} — ${dict.slotNotEnough})`;
+        } else {
+          const word = remaining === 1 ? dict.slotWordOne : dict.slotWordFew;
+          opt.text = `${baseTime} (${remaining} ${word} — ${dict.slotNotEnough})`;
+        }
+      } else {
+        opt.disabled = false;
+        if (currentLang === 'ru') {
+          const word = getNoun(remaining, dict.slotWordOne, dict.slotWordFew, dict.slotWordMany);
+          opt.text = `${baseTime} (${dict.slotLeft} ${remaining} ${word})`;
+        } else {
+          const word = remaining === 1 ? dict.slotWordOne : dict.slotWordFew;
+          opt.text = `${baseTime} (${remaining} ${word})`;
+        }
+      }
+    });
+
+    if (select.selectedOptions[0] && select.selectedOptions[0].disabled) {
+      select.value = '';
+    }
+  }
+
+  async function checkCapacity() {
+    try {
+      const res = await fetch(STEIN_URL);
+      if (!res.ok) return;
+      const data = await res.json();
+
+      slotBookedCounts = {};
+      data.forEach(row => {
+        if (row.time) {
+          slotBookedCounts[row.time] = (slotBookedCounts[row.time] || 0) + 1;
+        }
+      });
+
+      updateTimeSelectOptions();
+    } catch(e) {
+      console.warn("Слоты не загружены:", e);
+    }
+  }
+
+  function handleGuestsCountChange() {
+    renderGuests();
+    updateTimeSelectOptions();
+    calculatePrice();
+  }
+
   function setLanguage(lang) {
     currentLang = lang;
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.innerText.toLowerCase() === lang));
@@ -666,6 +754,7 @@
 
     renderDeliveryChips();
     renderGuests();
+    updateTimeSelectOptions();
     calculatePrice();
   }
 
@@ -709,31 +798,6 @@
       const found = allItems.find(it => it.id === id);
       return found ? (lang === 'ru' ? found.val_ru : found.val_en) : id;
     }).join(', ');
-  }
-
-  async function checkCapacity() {
-    try {
-      const res = await fetch(STEIN_URL);
-      if (!res.ok) return;
-      const data = await res.json();
-
-      const counts = {};
-      data.forEach(row => {
-        if (row.time) {
-          counts[row.time] = (counts[row.time] || 0) + 1;
-        }
-      });
-
-      const select = document.getElementById('deliveryTime');
-      Array.from(select.options).forEach(opt => {
-        if (opt.value && (counts[opt.value] || 0) >= 5) {
-          opt.disabled = true;
-          opt.text = opt.text.replace(" (занято)", "") + " (занято)";
-        }
-      });
-    } catch(e) {
-      console.warn("Слоты не загружены:", e);
-    }
   }
 
   function renderGuests() {
