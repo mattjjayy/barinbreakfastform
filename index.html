@@ -15,9 +15,10 @@
       --text-muted: #8e8e93;
       --border: #2c2c30;
       --success: #34c759;
+      --error: #ff453a;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--bg); color: var(--text); min-height: 100vh; padding: 20px 14px 120px; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; padding: 20px 14px 130px; }
     .container { max-width: 850px; margin: 0 auto; }
     header { text-align: center; margin-bottom: 24px; position: relative; }
     header h1 { font-size: 22px; font-weight: 700; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; }
@@ -69,27 +70,6 @@
     }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); }
 
-    .time-container {
-      display: flex;
-      gap: 12px;
-      align-items: stretch;
-    }
-    .time-container select {
-      flex: 1;
-    }
-    .early-breakfast-hint {
-      flex: 1.2;
-      background: rgba(212, 175, 55, 0.08);
-      border: 1px dashed rgba(212, 175, 55, 0.4);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 11px;
-      color: #e5cf8b;
-      display: flex;
-      align-items: center;
-      line-height: 1.35;
-    }
-
     #deliveryOptionsBlock { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border); }
     .delivery-group { margin-bottom: 14px; }
     .delivery-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #fff; }
@@ -136,21 +116,57 @@
     .submit-btn { background: var(--accent); color: #000; border: none; border-radius: 10px; padding: 14px 24px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
     .submit-btn:disabled { background: #444; color: #777; cursor: not-allowed; }
 
+    /* Модальное окно проверки заказа */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
-    .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 24px 20px; max-width: 480px; width: 100%; max-height: 85vh; overflow-y: auto; text-align: left; }
-    .modal-content h2 { color: var(--accent); margin-bottom: 12px; font-size: 18px; text-align: center; }
-    .modal-review-row { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding: 6px 0; font-size: 13px; color: #ccc; }
+    .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 24px 20px; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; text-align: left; }
+    .modal-content h2 { color: var(--accent); margin-bottom: 14px; font-size: 18px; text-align: center; }
+    .modal-review-row { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding: 8px 0; font-size: 13px; color: #ccc; }
     .modal-review-row b { color: #fff; }
     .modal-guest-box { background: #242428; border-radius: 10px; padding: 10px; margin-top: 8px; font-size: 12px; line-height: 1.4; }
-    .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
-    .modal-btn { background: #333; color: #fff; border: none; padding: 12px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; flex: 1; text-align: center; }
-    .modal-btn-confirm { background: var(--accent); color: #000; font-weight: 700; }
 
-    @media (max-width: 480px) {
-      .time-container {
-        flex-direction: column;
-      }
+    /* Выделенный блок выбора времени внутри модалки */
+    .modal-time-box {
+      margin-top: 18px;
+      padding: 14px;
+      background: #242428;
+      border: 1.5px solid var(--accent);
+      border-radius: 14px;
     }
+    .modal-time-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .modal-time-select {
+      width: 100%;
+      background: #1a1a1e !important;
+      border: 1px solid var(--border) !important;
+      border-radius: 10px !important;
+      color: #fff !important;
+      padding: 12px 14px !important;
+      font-size: 15px !important;
+      font-weight: 600 !important;
+      outline: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .modal-time-select:focus {
+      border-color: var(--accent) !important;
+    }
+    .modal-early-hint {
+      font-size: 11px;
+      color: #e5cf8b;
+      margin-top: 8px;
+      line-height: 1.35;
+    }
+
+    .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+    .modal-btn { background: #333; color: #fff; border: none; padding: 14px 16px; border-radius: 10px; font-weight: 600; cursor: pointer; flex: 1; text-align: center; }
+    .modal-btn-confirm { background: var(--accent); color: #000; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -165,6 +181,7 @@
     <p id="headerSubtitle">Заказ завтрака • Подача 8:00 – 10:45<br><strong>Завтраки выбираются ЕЖЕДНЕВНО до 22:00</strong></p>
   </header>
 
+  <!-- 1. Детали подачи (комната, ФИО, персоны, место) -->
   <div class="card-section">
     <div class="section-title" id="tDetails">📍 Детали подачи</div>
     <div class="form-grid">
@@ -193,31 +210,9 @@
           <option value="В номер">В номер</option>
         </select>
       </div>
-      <div class="form-group" style="grid-column: 1 / -1;">
-        <label id="tTime">Желаемое время подачи *</label>
-        <div class="time-container">
-          <select id="deliveryTime" required>
-            <option value="" disabled selected id="optTimePlaceholder">Выберите время...</option>
-            <option value="8:00:00">8:00</option>
-            <option value="8:15:00">8:15</option>
-            <option value="8:30:00">8:30</option>
-            <option value="8:45:00">8:45</option>
-            <option value="9:00:00">9:00</option>
-            <option value="9:15:00">9:15</option>
-            <option value="9:30:00">9:30</option>
-            <option value="9:45:00">9:45</option>
-            <option value="10:00:00">10:00</option>
-            <option value="10:15:00">10:15</option>
-            <option value="10:30:00">10:30</option>
-            <option value="10:45:00">10:45</option>
-          </select>
-          <div class="early-breakfast-hint" id="tEarlyHint">
-            ℹ️ Для заказа раннего завтрака обратитесь на ресепшен
-          </div>
-        </div>
-      </div>
     </div>
 
+    <!-- Дополнительные опции для номера -->
     <div id="deliveryOptionsBlock">
       <div class="section-title" style="font-size: 14px; margin-bottom: 10px;" id="tDeliveryHead">🛎 Дополнительно для подачи в номер:</div>
 
@@ -248,8 +243,10 @@
     </div>
   </div>
 
+  <!-- 2. Выбор блюд по гостям -->
   <div id="guestsContainer"></div>
 
+  <!-- 3. Пожелания и комментарии -->
   <div class="card-section">
     <div class="section-title" id="tCommentsHead">💬 Особые пожелания или аллергии</div>
     <div class="form-group">
@@ -263,17 +260,16 @@
     <span class="footer-price-label" id="tExtraLabel">Доплата за доп. блюда:</span>
     <span class="footer-price-val" id="totalExtraPrice">0 ₽</span>
   </div>
-  <button class="submit-btn" id="submitBtn" onclick="openReviewModal()">Оформить заказ</button>
+  <button class="submit-btn" id="submitBtn" onclick="openReviewModal()">Перейти к подтверждению</button>
 </div>
 
-<!-- Модальное окно проверки заказа -->
+<!-- Модальное окно подтверждения и ВЫБОРА ВРЕМЕНИ -->
 <div class="modal" id="reviewModal">
   <div class="modal-content">
     <h2 id="revTitle">Подтверждение заказа</h2>
     <div class="modal-review-row"><span id="lblRevRoom">Комната:</span><b id="revRoom"></b></div>
     <div class="modal-review-row"><span id="lblRevName">Гость:</span><b id="revName"></b></div>
     <div class="modal-review-row"><span id="lblRevPlace">Место подачи:</span><b id="revPlace"></b></div>
-    <div class="modal-review-row"><span id="lblRevTime">Время подачи:</span><b id="revTime"></b></div>
     <div class="modal-review-row" id="revDeliveryRow" style="display: none;"><span id="lblRevServing">Сервировка:</span><b id="revDelivery"></b></div>
 
     <div style="font-weight: 600; font-size: 13px; color: var(--accent); margin-top: 14px;" id="lblRevMenu">Выбранное меню:</div>
@@ -284,9 +280,30 @@
       <b style="color: var(--accent); font-size: 16px;" id="revExtraPrice">0 ₽</b>
     </div>
 
+    <!-- ВЫБОР ВРЕМЕНИ НА ШАГЕ ПОДТВЕРЖДЕНИЯ -->
+    <div class="modal-time-box">
+      <div class="modal-time-label" id="lblModalTime">⏱ Выберите время подачи завтрака *</div>
+      <select id="deliveryTime" class="modal-time-select" required>
+        <option value="" disabled selected id="optTimePlaceholder">Нажмите, чтобы выбрать время...</option>
+        <option value="8:00:00">8:00</option>
+        <option value="8:15:00">8:15</option>
+        <option value="8:30:00">8:30</option>
+        <option value="8:45:00">8:45</option>
+        <option value="9:00:00">9:00</option>
+        <option value="9:15:00">9:15</option>
+        <option value="9:30:00">9:30</option>
+        <option value="9:45:00">9:45</option>
+        <option value="10:00:00">10:00</option>
+        <option value="10:15:00">10:15</option>
+        <option value="10:30:00">10:30</option>
+        <option value="10:45:00">10:45</option>
+      </select>
+      <div class="modal-early-hint" id="tModalEarlyHint">ℹ️ Для заказа раннего завтрака (до 8:00) обратитесь на ресепшен</div>
+    </div>
+
     <div class="modal-actions">
       <button class="modal-btn" onclick="closeReviewModal()" id="btnRevEdit">Изменить</button>
-      <button class="modal-btn modal-btn-confirm" id="btnRevConfirm" onclick="submitOrder()">Все верно, заказать</button>
+      <button class="modal-btn modal-btn-confirm" id="btnRevConfirm" onclick="submitOrder()">Заказать</button>
     </div>
   </div>
 </div>
@@ -318,9 +335,9 @@
       place: "Место подачи *",
       placeCafe: "Кафе (9 этаж)",
       placeRoom: "В номер",
-      time: "Желаемое время подачи *",
-      timePlaceholder: "Выберите время...",
-      earlyHint: "ℹ️ Для заказа раннего завтрака обратитесь на ресепшен",
+      timeModalLabel: "⏱ Выберите время подачи завтрака *",
+      timePlaceholder: "Нажмите, чтобы выбрать время...",
+      earlyHint: "ℹ️ Для заказа раннего завтрака (до 8:00) обратитесь на ресепшен",
       slotFull: "мест нет",
       slotLeft: "осталось",
       slotWordOne: "место",
@@ -336,7 +353,7 @@
       commentsHead: "💬 Особые пожелания или аллергии",
       commentPh: "Укажите аллергии или комментарии к заказу...",
       extraLabel: "Доплата за доп. блюда:",
-      btnOrder: "Оформить заказ",
+      btnOrder: "Перейти к подтверждению",
       guestTitle: "👤 Гость №",
       mainLabel: "1. ОСНОВНЫЕ БЛЮДА (выберите одно или несколько):",
       badgeLimit: "Первое бесплатно, каждое след. +350 ₽",
@@ -345,18 +362,17 @@
       revRoom: "Комната:",
       revName: "Гость:",
       revPlace: "Место подачи:",
-      revTime: "Время подачи:",
       revServing: "Сервировка:",
       revMenu: "Выбранное меню:",
       revTotal: "Итого доплата:",
       btnBack: "Изменить",
-      btnConfirm: "Все верно, заказать",
+      btnConfirm: "Заказать",
       successTitle: "✓ Заказ принят!",
       successDesc: "Данные переданы на кухню. Ждем вас на завтрак!",
       successBtn: "Сделать еще заказ",
       alertRoom: "Пожалуйста, укажите номер комнаты!",
       alertName: "Пожалуйста, укажите ФИО гостя!",
-      alertTime: "Пожалуйста, выберите желаемое время подачи!",
+      alertTime: "Пожалуйста, выберите желаемое время подачи завтрака!",
       alertNoDish: "Пожалуйста, выберите хотя бы одно блюдо для Гостя №",
       sending: "Отправка..."
     },
@@ -371,9 +387,9 @@
       place: "Serving place *",
       placeCafe: "Cafe (9th floor)",
       placeRoom: "Room delivery",
-      time: "Preferred time *",
-      timePlaceholder: "Select time...",
-      earlyHint: "ℹ️ Contact reception for early breakfast orders",
+      timeModalLabel: "⏱ Select serving time *",
+      timePlaceholder: "Click to select time...",
+      earlyHint: "ℹ️ For early breakfast (before 8:00) please contact the reception",
       slotFull: "fully booked",
       slotLeft: "left",
       slotWordOne: "seat left",
@@ -389,7 +405,7 @@
       commentsHead: "💬 Special requests or allergies",
       commentPh: "Specify allergies or order comments...",
       extraLabel: "Extra dishes charge:",
-      btnOrder: "Review Order",
+      btnOrder: "Proceed to Review",
       guestTitle: "👤 Guest #",
       mainLabel: "1. MAIN DISHES (select one or multiple):",
       badgeLimit: "1st is free, each extra +350 ₽",
@@ -398,12 +414,11 @@
       revRoom: "Room:",
       revName: "Guest:",
       revPlace: "Place:",
-      revTime: "Time:",
       revServing: "Serving:",
       revMenu: "Selected items:",
       revTotal: "Total extra charge:",
       btnBack: "Edit",
-      btnConfirm: "Confirm & Order",
+      btnConfirm: "Confirm Order",
       successTitle: "✓ Order Accepted!",
       successDesc: "Your order has been sent to the kitchen. Enjoy your meal!",
       successBtn: "Place another order",
@@ -701,16 +716,17 @@
     document.getElementById('guestName').placeholder = dict.namePh;
     document.getElementById('tCount').innerText = dict.count;
     document.getElementById('tPlace').innerText = dict.place;
-    document.getElementById('tTime').innerText = dict.time;
+
+    document.getElementById('lblModalTime').innerText = dict.timeModalLabel;
     
     const timePlaceholder = document.getElementById('optTimePlaceholder');
     if (timePlaceholder) {
       timePlaceholder.text = dict.timePlaceholder;
     }
 
-    const earlyHint = document.getElementById('tEarlyHint');
-    if (earlyHint) {
-      earlyHint.innerText = dict.earlyHint;
+    const modalEarlyHint = document.getElementById('tModalEarlyHint');
+    if (modalEarlyHint) {
+      modalEarlyHint.innerText = dict.earlyHint;
     }
 
     document.getElementById('tDeliveryHead').innerText = dict.deliveryHead;
@@ -741,7 +757,6 @@
     document.getElementById('lblRevRoom').innerText = dict.revRoom;
     document.getElementById('lblRevName').innerText = dict.revName;
     document.getElementById('lblRevPlace').innerText = dict.revPlace;
-    document.getElementById('lblRevTime').innerText = dict.revTime;
     document.getElementById('lblRevServing').innerText = dict.revServing;
     document.getElementById('lblRevMenu').innerText = dict.revMenu;
     document.getElementById('lblRevTotal').innerText = dict.revTotal;
@@ -1026,7 +1041,6 @@
     const dict = DICTIONARY[currentLang];
     const room = document.getElementById('roomNumber').value.trim();
     const guestName = document.getElementById('guestName').value.trim();
-    const deliveryTime = document.getElementById('deliveryTime').value;
 
     if (!room) {
       alert(dict.alertRoom);
@@ -1034,10 +1048,6 @@
     }
     if (!guestName) {
       alert(dict.alertName);
-      return;
-    }
-    if (!deliveryTime) {
-      alert(dict.alertTime);
       return;
     }
 
@@ -1055,7 +1065,6 @@
     document.getElementById('revRoom').innerText = room;
     document.getElementById('revName').innerText = guestName;
     document.getElementById('revPlace').innerText = displayPlace;
-    document.getElementById('revTime').innerText = deliveryTime;
 
     const deliverySummary = getSelectedDeliveryText(currentLang);
     if (isRoom && selectedDeliveryIds.length > 0) {
@@ -1105,6 +1114,10 @@
     });
 
     document.getElementById('revExtraPrice').innerText = document.getElementById('totalExtraPrice').innerText;
+    
+    // Обновляем слоты прямо перед открытием окна
+    checkCapacity();
+    
     document.getElementById('reviewModal').style.display = 'flex';
   }
 
@@ -1114,6 +1127,18 @@
 
   async function submitOrder() {
     const dict = DICTIONARY[currentLang];
+    const deliveryTime = document.getElementById('deliveryTime').value;
+
+    // ВАЛИДАЦИЯ ВРЕМЕНИ ПРИ ПОДТВЕРЖДЕНИИ
+    if (!deliveryTime) {
+      alert(dict.alertTime);
+      const sel = document.getElementById('deliveryTime');
+      sel.focus();
+      sel.style.borderColor = "var(--error)";
+      setTimeout(() => { sel.style.borderColor = "var(--accent)"; }, 1500);
+      return;
+    }
+
     const btn = document.getElementById('btnRevConfirm');
     btn.disabled = true;
     btn.innerText = dict.sending;
@@ -1124,7 +1149,6 @@
     const rawPlace = document.getElementById('deliveryPlace').value;
     const finalPlace = (rawPlace === "В номер" || rawPlace.includes("номер") || rawPlace.includes("Room")) ? "В номер" : "Кафе";
 
-    const time = document.getElementById('deliveryTime').value;
     const generalComment = document.getElementById('comment').value.trim();
     const deliverySummary = (finalPlace === "В номер") ? getSelectedDeliveryText('ru') : "";
 
@@ -1156,7 +1180,7 @@
       return {
         "room": room,
         "guest_name": `${guestName} (Гость ${idx + 1})`,
-        "time": time,
+        "time": deliveryTime,
         "place": finalPlace,
         "main": mainsFormatted,
         "main_mods": "",
