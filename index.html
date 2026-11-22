@@ -51,6 +51,26 @@
       color: #000;
     }
 
+    /* Кнопка-триггер шведского стола */
+    .buffet-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .buffet-trigger-btn:hover {
+      background: rgba(212, 175, 55, 0.22);
+    }
+
     .card-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 18px 16px; margin-bottom: 20px; }
     .section-title { font-size: 16px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--accent); }
 
@@ -116,13 +136,30 @@
     .submit-btn { background: var(--accent); color: #000; border: none; border-radius: 10px; padding: 14px 24px; font-size: 15px; font-weight: 700; cursor: pointer; transition: 0.2s; }
     .submit-btn:disabled { background: #444; color: #777; cursor: not-allowed; }
 
-    /* Модальное окно проверки заказа */
+    /* Модальные окна */
     .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
     .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 24px 20px; max-width: 500px; width: 100%; max-height: 85vh; overflow-y: auto; text-align: left; }
     .modal-content h2 { color: var(--accent); margin-bottom: 14px; font-size: 18px; text-align: center; }
     .modal-review-row { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border); padding: 8px 0; font-size: 13px; color: #ccc; }
     .modal-review-row b { color: #fff; }
     .modal-guest-box { background: #242428; border-radius: 10px; padding: 10px; margin-top: 8px; font-size: 12px; line-height: 1.4; }
+
+    /* Стили для модалки шведского стола */
+    .buffet-img-preview {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      display: block;
+      object-fit: cover;
+      max-height: 55vh;
+      background: #242428;
+    }
+    .buffet-desc-text {
+      font-size: 13px;
+      color: #ccc;
+      line-height: 1.45;
+      text-align: center;
+    }
 
     /* Выделенный блок выбора времени внутри модалки */
     .modal-time-box {
@@ -179,6 +216,7 @@
     </div>
     <h1>Barin Residence</h1>
     <p id="headerSubtitle">Заказ завтрака • Подача 8:00 – 10:45<br><strong>Завтраки выбираются ЕЖЕДНЕВНО до 22:00</strong></p>
+    <button class="buffet-trigger-btn" id="btnBuffetOpen" onclick="openBuffetModal()">📸 Что на шведском столе?</button>
   </header>
 
   <!-- 1. Детали подачи (комната, ФИО, персоны, место) -->
@@ -263,6 +301,18 @@
   <button class="submit-btn" id="submitBtn" onclick="openReviewModal()">Перейти к подтверждению</button>
 </div>
 
+<!-- Модальное окно фото шведского стола -->
+<div class="modal" id="buffetModal" onclick="closeBuffetModal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <h2 id="tBuffetTitle">Шведский стол в кафе</h2>
+    <img src="buffet.jpg" alt="Шведский стол" class="buffet-img-preview">
+    <p class="buffet-desc-text" id="tBuffetDesc">В дополнение к выбранному горячему блюду для гостей в кафе доступны свежая выпечка, нарезки, овощи, фрукты, мюсли, йогурты, соки, чай и зерновой кофе.</p>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-confirm" onclick="closeBuffetModal()" id="btnBuffetClose">Понятно, закрыть</button>
+    </div>
+  </div>
+</div>
+
 <!-- Модальное окно подтверждения и ВЫБОРА ВРЕМЕНИ -->
 <div class="modal" id="reviewModal">
   <div class="modal-content">
@@ -326,6 +376,10 @@
   const DICTIONARY = {
     ru: {
       subtitle: "Заказ завтрака • Подача 8:00 – 10:45<br><strong>Завтраки выбираются ЕЖЕДНЕВНО до 22:00</strong>",
+      btnBuffetOpen: "📸 Что на шведском столе?",
+      buffetTitle: "Шведский стол в кафе",
+      buffetDesc: "В дополнение к выбранному горячему блюду для гостей в кафе доступны свежая выпечка, нарезки, овощи, фрукты, мюсли, йогурты, соки, чай и зерновой кофе.",
+      btnBuffetClose: "Понятно, закрыть",
       details: "📍 Детали подачи",
       room: "Номер комнаты *",
       roomPh: "Например: 33",
@@ -378,6 +432,10 @@
     },
     en: {
       subtitle: "Breakfast order • Serving 8:00 – 10:45<br><strong>Orders must be placed DAILY before 22:00</strong>",
+      btnBuffetOpen: "📸 What's on the buffet?",
+      buffetTitle: "Breakfast Buffet in Cafe",
+      buffetDesc: "In addition to your hot dish, guests in the cafe can enjoy fresh pastries, cold cuts, vegetables, fruits, muesli, yogurts, juices, tea, and freshly brewed coffee.",
+      btnBuffetClose: "Got it, close",
       details: "📍 Serving Details",
       room: "Room number *",
       roomPh: "E.g. 33",
@@ -628,6 +686,14 @@
   let orderData = [];
   let selectedDeliveryIds = [];
 
+  function openBuffetModal() {
+    document.getElementById('buffetModal').style.display = 'flex';
+  }
+
+  function closeBuffetModal() {
+    document.getElementById('buffetModal').style.display = 'none';
+  }
+
   function getNoun(number, one, few, many) {
     let n = Math.abs(number) % 100;
     let n1 = n % 10;
@@ -656,10 +722,10 @@
         opt.disabled = true;
         if (currentLang === 'ru') {
           const word = getNoun(remaining, dict.slotWordOne, dict.slotWordFew, dict.slotWordMany);
-          opt.text = `${baseTime} (${dict.slotLeft} ${remaining} ${word} — ${dict.slotNotEnough})`;
+          opt.text = `${baseTime} (${dict.slotLeft} ${remaining} ${word} – ${dict.slotNotEnough})`;
         } else {
           const word = remaining === 1 ? dict.slotWordOne : dict.slotWordFew;
-          opt.text = `${baseTime} (${remaining} ${word} — ${dict.slotNotEnough})`;
+          opt.text = `${baseTime} (${remaining} ${word} – ${dict.slotNotEnough})`;
         }
       } else {
         opt.disabled = false;
@@ -709,6 +775,11 @@
 
     const dict = DICTIONARY[lang];
     document.getElementById('headerSubtitle').innerHTML = dict.subtitle;
+    document.getElementById('btnBuffetOpen').innerText = dict.btnBuffetOpen;
+    document.getElementById('tBuffetTitle').innerText = dict.buffetTitle;
+    document.getElementById('tBuffetDesc').innerText = dict.buffetDesc;
+    document.getElementById('btnBuffetClose').innerText = dict.btnBuffetClose;
+
     document.getElementById('tDetails').innerText = dict.details;
     document.getElementById('tRoom').innerText = dict.room;
     document.getElementById('roomNumber').placeholder = dict.roomPh;
@@ -904,14 +975,14 @@
             ${dish.bases.map(b => {
               const isActive = isSelected && currentBase === b.id;
               const baseText = currentLang === 'ru' ? b.ru : b.en;
-              return `<div class="mod-chip base-chip-${guestIdx}-${dish.id}${isActive ? 'active' : ''}" onclick="selectBase(${guestIdx}, '${dish.id}', '${b.id}', this)">${baseText}</div>`;
+              return `<div class="mod-chip base-chip-${guestIdx}-${dish.id} ${isActive ? 'active' : ''}" onclick="selectBase(${guestIdx}, '${dish.id}', '${b.id}', this)">${baseText}</div>`;
             }).join('')}
           </div>
           <div class="modifiers" style="margin-top:4px; padding-top:4px; border:none;" onclick="event.stopPropagation()">
             ${dish.mods.map(m => {
               const isActive = isSelected && g.extraModifiers.includes(m.id);
               const modText = currentLang === 'ru' ? m.ru : m.en;
-              return `<div class="mod-chip extramod-${guestIdx}-${dish.id}${isActive ? 'active' : ''}" onclick="toggleExtraMod(${guestIdx}, '${dish.id}', '${m.id}', this)">+ ${modText}</div>`;
+              return `<div class="mod-chip extramod-${guestIdx}-${dish.id} ${isActive ? 'active' : ''}" onclick="toggleExtraMod(${guestIdx}, '${dish.id}', '${m.id}', this)">+ ${modText}</div>`;
             }).join('')}
           </div>
         </div>
