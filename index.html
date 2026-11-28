@@ -1227,14 +1227,14 @@
       const mainsFormatted = g.mainDishes.map((m, mIdx) => {
         const d = MAIN_DISHES.find(x => x.id === m.id);
         const name = d.name_ru;
-        const tag = mIdx === 0 ? '' : ' [+350₽]';
+        const prefix = mIdx === 0 ? '' : 'доп: ';
         const modsList = m.mods.map(modId => {
           const foundMod = d.mods.find(x => x.id === modId);
           return foundMod ? foundMod.ru : modId;
         });
         const mods = modsList.length > 0 ? ` (+ ${modsList.join(', ')})` : '';
-        return `${name}${mods}${tag}`;
-      }).join('; ');
+        return `${prefix}${name}${mods}`;
+      }).join('\n');
 
       const extraDef = EXTRA_DISHES.find(d => d.id === g.extraDish);
       const extraName = extraDef ? extraDef.name_ru : '';
